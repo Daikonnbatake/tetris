@@ -1,0 +1,40 @@
+<html>
+    <head>
+        <title>50行テトリス</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            #canvas {
+                display: block;
+                background-color: blue;
+                position: absolute;
+                top: -60;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                margin: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="canvas"></canvas>
+
+        <!-- 構造体の読み込み -->
+        <script src="./lib/Struct/Angle.js"></script>
+        <script src="./lib/Struct/Point.js"></script>
+        <script src="./lib/Struct/Rect.js"></script>
+        <script src="./lib/Struct/Scale.js"></script>
+        <script src="./lib/Struct/Size.js"></script>
+        <script src="./lib/Struct/Transform.js"></script>
+
+        <!-- 描画関連の読み込み -->
+        <script src="./lib/Renderer/Sprite.js"></script>
+        <script src="./lib/Renderer/Canvas.js"></script>
+
+        <!-- エントリーポイント -->
+        <script src="./Game.js"></script>
+    </body>
+</html>
