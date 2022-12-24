@@ -10,12 +10,15 @@
             #canvas {
                 display: block;
                 background-color: blue;
+                image-rendering: pixelated;
                 position: absolute;
+                margin: auto;
                 top: -60;
                 right: 0;
                 bottom: 0;
                 left: 0;
-                margin: auto;
+                width: 800;
+                height: 720;
             }
         </style>
     </head>
@@ -24,6 +27,9 @@
 
         <!-- 構造体の読み込み -->
         <script src="./lib/Struct/Angle.js"></script>
+        <script src="./lib/Struct/Bitmap.js"></script>
+        <script src="./lib/Struct/NormalizeNumber.js"></script>
+        <script src="./lib/Struct/Pivot.js"></script>
         <script src="./lib/Struct/Point.js"></script>
         <script src="./lib/Struct/Rect.js"></script>
         <script src="./lib/Struct/Scale.js"></script>
@@ -34,6 +40,9 @@
         <script src="./lib/Renderer/Canvas.js"></script>
         <script src="./lib/Renderer/ImageCache.js"></script>
         <script src="./lib/Renderer/Sprite.js"></script>
+
+        <!-- マクロ -->
+        <script src="./lib/Macro.js"></script>
 
         <!-- エントリーポイント -->
         <script src="./Game.js"></script>
