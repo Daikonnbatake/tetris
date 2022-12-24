@@ -10,6 +10,9 @@ function Game()
     a.Draw(Canvas.Context(), 34);
     t.SetPosition(16, 0);
     a.Draw(Canvas.Context(), 35);
+    t.SetPosition(0, 8);
+    a.Join();
+    a.Draw(Canvas.Context());
 }
 
 window.onload = async ()=>
