@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>50行テトリス</title>
+        <title>教育的なテトリス</title>
         <style>
             body {
                 margin: 0;
@@ -25,17 +25,21 @@
     <body>
         <canvas id="canvas"></canvas>
 
-        <!-- 構造体の読み込み -->
-        <script src="./lib/Struct/Angle.js"></script>
-        <script src="./lib/Struct/NormalizeNumber.js"></script>
-        <script src="./lib/Struct/Pivot.js"></script>
-        <script src="./lib/Struct/Point.js"></script>
-        <script src="./lib/Struct/Rect.js"></script>
-        <script src="./lib/Struct/Scale.js"></script>
-        <script src="./lib/Struct/Size.js"></script>
-        <script src="./lib/Struct/Transform.js"></script>
+        <!-- 入力関連クラスの読み込み -->
+        <script src="./lib/InputManager/InputManager.js"></script>
+        <script src="./lib/InputManager/InputMessage.js"></script>
+        <script src="./lib/InputManager/KeyObserver.js"></script>
+        <script src="./lib/InputManager/KeyState.js"></script>
 
         <!-- 描画関連クラスの読み込み -->
+        <script src="./lib/Renderer/Struct/Angle.js"></script>
+        <script src="./lib/Renderer/Struct/NormalizeNumber.js"></script>
+        <script src="./lib/Renderer/Struct/Pivot.js"></script>
+        <script src="./lib/Renderer/Struct/Point.js"></script>
+        <script src="./lib/Renderer/Struct/Rect.js"></script>
+        <script src="./lib/Renderer/Struct/Scale.js"></script>
+        <script src="./lib/Renderer/Struct/Size.js"></script>
+        <script src="./lib/Renderer/Struct/Transform.js"></script>
         <script src="./lib/Renderer/Canvas.js"></script>
         <script src="./lib/Renderer/ImageCache.js"></script>
         <script src="./lib/Renderer/Sprite.js"></script>
@@ -43,7 +47,13 @@
         <!-- マクロ -->
         <script src="./lib/Macro.js"></script>
 
+        <!-- フレームワーク -->
+
+
+        <!-- いじる部分 -->
+        <script src="./Main.js"></script>
+
         <!-- エントリーポイント -->
-        <script src="./Game.js"></script>
+        <script src="./framework/GameApp.js"></script>
     </body>
 </html>
