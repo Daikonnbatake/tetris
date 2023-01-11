@@ -73,7 +73,7 @@ class Point
     * 説明: X座標を設定する.
     *
     * 引数:
-    *   number:  X座標.
+    *   number  x:  X座標.
     *
     +-----------------------------------------------------------------*/
     SetX(x)
@@ -87,11 +87,30 @@ class Point
     * 説明: Y座標を設定する.
     *
     * 引数:
-    *   number:  Y座標.
+    *   number  y:  Y座標.
     *
     +-----------------------------------------------------------------*/
     SetY(y)
     {
         this.#y = y;
+    }
+
+
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: この座標と他の座標との差を求める.
+    *
+    * 引数:
+    *   Point: point 比較対象の座標.
+    *
+    +-----------------------------------------------------------------*/
+    Difference(point)
+    {
+        const targetX = point.#x;
+        const targetY = point.#y;
+        const thisX   = this.#x;
+        const thisY   = this.#y;
+
+        return new Point(targetX - thisX, targetY - thisY);
     }
 }

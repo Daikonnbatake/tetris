@@ -6,7 +6,7 @@ function AppUpdate()
 
 window.onload = async ()=>
 {
-    Canvas.Start(160, 144);              // Canvas の初期化.
+    Canvas.Start(240, 160);              // Canvas の初期化.
     InputManager.Start();                // InputManager の初期化.
 
     await Start();                       // アプリケーションの初期化.
