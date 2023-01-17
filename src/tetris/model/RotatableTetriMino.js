@@ -6,27 +6,27 @@
 
 class RotatableTetriMino
 {
-    #tetriMino;   // TetriMino:       テトリミノの形状を管理する.
-    #srsPadding;  // RotatePadding:   SRSのズラし状態を管理する.
-    #rotateDiff;  // RotateDiff:      回転の差を管理する.
-    #angle;       // TetriMinoAngle:  角度を管理する.
+    #tetriMino;      // TetriMino:       テトリミノの形状を管理する.
+    #srsTransition;  // SRSTransition:   SRSのズラし状態を管理する.
+    #rotateDiff;     // RotateDiff:      回転の差を管理する.
+    #angle;          // TetriMinoAngle:  角度を管理する.
 
 
     /*-----------------------------------------------------------------+
     *
     * 説明: コンストラクタ.
-    * 
+    *
     * 引数:
-    *   TetriMino                   tetriMino:     テトリミノ.
-    *   Obj<string, RotatePadding>  srsPaddingObj: SRSズラし設定.
+    *   TetriMino      tetriMino:      テトリミノ.
+    *   SRSTransition  srsTransition:  SRSズラし設定.
     *
     +-----------------------------------------------------------------*/
-    constructor(tetriMino, srsPaddingObj)
+    constructor(tetriMino, srsTransition)
     {
-        this.#tetriMino  = tetriMino;
-        this.#srsPadding  = srsPaddingObj;
-        this.#rotateDiff = new RotateDiff();
-        this.#angle      = new TetriMinoAngle();
+        this.#tetriMino      = tetriMino;
+        this.#srsTransition  = srsTransition;
+        this.#rotateDiff     = new RotateDiff();
+        this.#angle          = new TetriMinoAngle();
     }
 
 
@@ -62,7 +62,7 @@ class RotatableTetriMino
     NextPadding()
     {
         const diff = this.#rotateDiff.ToString();
-        this.#srsPadding[diff] = this.#srsPadding[diff].Next();
+        this.#srsTransition.Next(diff);
     }
 
 
@@ -74,14 +74,28 @@ class RotatableTetriMino
     ResetPadding()
     {
         const diff = this.#rotateDiff.ToString();
-        this.#srsPadding[diff] = this.#srsPadding[diff].Begin();
+        this.#srsTransition.ResetTransition(diff);
+    }
+
+
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: SRSのズラし量を取得する.
+    *
+    * 戻り値:
+    *   Point: SRSのズラし量.
+    +-----------------------------------------------------------------*/
+    GetPadding()
+    {
+        const diff = this.#rotateDiff.ToString();
+        return this.#srsTransition.GetVolume(diff);
     }
 
 
     /*-----------------------------------------------------------------+
     *
     * 説明: このミノを構成するブロックを取得する.
-    * 
+    *
     * 戻り値:
     *   Block: ブロック.
     *
@@ -95,7 +109,7 @@ class RotatableTetriMino
     /*-----------------------------------------------------------------+
     *
     * 説明: テトリミノの中心座標を取得する.
-    * 
+    *
     * 戻り値:
     *   Point: テトリミノの中心座標.
     *
@@ -113,7 +127,7 @@ class RotatableTetriMino
     /*-----------------------------------------------------------------+
     *
     * 説明: 回転/SRSを反映したテトリミノの形状(座標の配列)を取得する.
-    * 
+    *
     * 戻り値:
     *   Array<Point>: テトリミノの形状.
     *
@@ -124,7 +138,7 @@ class RotatableTetriMino
         const origin    = this.#tetriMino.GetOrigin();
         const rotated   = this.#angle.ApplyTurnEffect(shape, origin);
         const diff      = this.#rotateDiff.ToString();
-        const padding   = this.#srsPadding[diff].GetPaddingVolume();
+        const padding   = this.#srsTransition.GetVolume(diff);
         const paddingX  = padding.GetX();
         const paddingY  = padding.GetY();
 
@@ -135,7 +149,6 @@ class RotatableTetriMino
             const y = point.GetY() + paddingY;
             result.push(new Point(x, y));
         }
-
         return result;
     }
 
@@ -143,7 +156,7 @@ class RotatableTetriMino
     /*-----------------------------------------------------------------+
     *
     * 説明: SRS の状態が最後なら true を返す.
-    * 
+    *
     * 戻り値:
     *   bool: SRS の状態.
     *
@@ -151,6 +164,6 @@ class RotatableTetriMino
     IsEnd()
     {
         const diff = this.#rotateDiff.ToString();
-        return this.#srsPadding[diff].IsEnd();
+        return this.#srsTransition.IsEnd(diff);
     }
 }

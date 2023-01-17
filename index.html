@@ -29,6 +29,34 @@
         <script src="./src/general/struct/Size.js"></script>
         <script src="./src/general/struct/Transform.js"></script>
 
+
+        <!-- テトリス全般 -->
+        <script src="./src/tetris/general/Block.js"></script>
+        <script src="./src/tetris/general/Counter.js"></script>
+        <script src="./src/tetris/general/Stopwatch.js"></script>
+
+        <!-- テトリスモデル -->
+        <script src="./src/tetris/model/BlockLine.js"></script>
+        <script src="./src/tetris/model/Collision.js"></script>
+        <script src="./src/tetris/model/ControllableTetriMino.js"></script>
+        <script src="./src/tetris/model/Field.js"></script>
+        <script src="./src/tetris/model/MutableBlock.js"></script>
+        <script src="./src/tetris/model/RotatableTetriMino.js"></script>
+        <script src="./src/tetris/model/RotateDiff.js"></script>
+        <script src="./src/tetris/model/RotatePadding.js"></script>
+        <script src="./src/tetris/model/SRSTransition.js"></script>
+        <script src="./src/tetris/model/SRSTransitionCache.js"></script>
+        <script src="./src/tetris/model/SRSTransitionProperties.js"></script>
+        <script src="./src/tetris/model/TetriMino.js"></script>
+        <script src="./src/tetris/model/TetriMinoAngle.js"></script>
+        <script src="./src/tetris/model/TetriMinoBuilder.js"></script>
+        <script src="./src/tetris/model/TetriMinoCache.js"></script>
+        <script src="./src/tetris/model/TetriMinoProperties.js"></script>
+
+        <!-- テトリスビュー -->
+        <script src="./src/tetris/view/FieldDrawer.js"></script>
+
+
         <!-- マクロ -->
         <script src="./src/general/Macro.js"></script>
 
@@ -36,13 +64,17 @@
         <!-- いじる部分 -->
         <script src="./Main.js"></script>
 
+        <!-- デバッグ用 -->
+        <script src="./src/tetris/view/ModelTestView.js"></script>
+
         <!-- エントリーポイント -->
         <script src="./src/tetris/GameApp.js"></script>
 
     </head>
     <body>
         <div id="main">
-            <canvas id="canvas"></canvas>
+            <canvas id="canvas-a" class="display" hidden></canvas>
+            <canvas id="canvas-b" class="display" hidden></canvas>
             <img id="frame" src="./img/frame.png"></img>
         </div>
     </body>

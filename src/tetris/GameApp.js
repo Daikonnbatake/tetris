@@ -11,5 +11,5 @@ window.onload = async ()=>
 
     await Start();                       // アプリケーションの初期化.
     //AppUpdate();
-    setInterval('AppUpdate()', 1000/60); // アプリケーションの更新処理.
+    setInterval('AppUpdate()', 1000/2); // アプリケーションの更新処理.
 }

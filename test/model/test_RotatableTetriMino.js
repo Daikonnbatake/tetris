@@ -14,110 +14,76 @@ describe('RotatableTetriMino', ()=>
     shape.push(new Point(0, 1));
     shape.push(new Point(1, 1));
     shape.push(new Point(2, 1));
-    
-    const NtoW1 = new RotatePadding(new Point( 0,  0), false);
-    const NtoW2 = new RotatePadding(new Point( 1,  0), false);
-    const NtoW3 = new RotatePadding(new Point( 1, -1), false);
-    const NtoW4 = new RotatePadding(new Point( 0,  2), false);
-    const NtoW5 = new RotatePadding(new Point( 1,  2), true);
-    NtoW1.ChangeNext(NtoW2);
-    NtoW2.ChangeNext(NtoW3);
-    NtoW3.ChangeNext(NtoW4);
-    NtoW4.ChangeNext(NtoW5);
-    NtoW5.ChangeNext(NtoW1);
 
-    const NtoE1 = new RotatePadding(new Point( 0,  0), false);
-    const NtoE2 = new RotatePadding(new Point(-1,  0), false);
-    const NtoE3 = new RotatePadding(new Point(-1, -1), false);
-    const NtoE4 = new RotatePadding(new Point( 0,  2), false);
-    const NtoE5 = new RotatePadding(new Point(-1,  2), true);
-    NtoE1.ChangeNext(NtoE2);
-    NtoE2.ChangeNext(NtoE3);
-    NtoE3.ChangeNext(NtoE4);
-    NtoE4.ChangeNext(NtoE5);
-    NtoE5.ChangeNext(NtoE1);
+    const NtoW1 = new Point( 0,  0);
+    const NtoW2 = new Point( 1,  0);
+    const NtoW3 = new Point( 1, -1);
+    const NtoW4 = new Point( 0,  2);
+    const NtoW5 = new Point( 1,  2);
+    const NtoW  = [NtoW1, NtoW2, NtoW3, NtoW4, NtoW5];
 
-    const EtoN1 = new RotatePadding(new Point( 0,  0), false);
-    const EtoN2 = new RotatePadding(new Point( 1,  0), false);
-    const EtoN3 = new RotatePadding(new Point( 1,  1), false);
-    const EtoN4 = new RotatePadding(new Point( 0, -2), false);
-    const EtoN5 = new RotatePadding(new Point( 1, -2), true);
-    EtoN1.ChangeNext(EtoN2);
-    EtoN2.ChangeNext(EtoN3);
-    EtoN3.ChangeNext(EtoN4);
-    EtoN4.ChangeNext(EtoN5);
-    EtoN5.ChangeNext(EtoN1);
+    const NtoE1 = new Point( 0,  0);
+    const NtoE2 = new Point(-1,  0);
+    const NtoE3 = new Point(-1, -1);
+    const NtoE4 = new Point( 0,  2);
+    const NtoE5 = new Point(-1,  2);
+    const NtoE  = [NtoE1, NtoE2, NtoE3, NtoE4, NtoE5];
 
-    const EtoS1 = new RotatePadding(new Point( 0,  0), false);
-    const EtoS2 = new RotatePadding(new Point( 1,  0), false);
-    const EtoS3 = new RotatePadding(new Point( 1,  1), false);
-    const EtoS4 = new RotatePadding(new Point( 0, -2), false);
-    const EtoS5 = new RotatePadding(new Point( 1, -2), true);
-    EtoS1.ChangeNext(EtoS2);
-    EtoS2.ChangeNext(EtoS3);
-    EtoS3.ChangeNext(EtoS4);
-    EtoS4.ChangeNext(EtoS5);
-    EtoS5.ChangeNext(EtoS1);
+    const EtoN1 = new Point( 0,  0);
+    const EtoN2 = new Point( 1,  0);
+    const EtoN3 = new Point( 1,  1);
+    const EtoN4 = new Point( 0, -2);
+    const EtoN5 = new Point( 1, -2);
+    const EtoN  = [EtoN1, EtoN2, EtoN3, EtoN4, EtoN5];
 
-    const StoE1 = new RotatePadding(new Point( 0,  0), false);
-    const StoE2 = new RotatePadding(new Point(-1,  0), false);
-    const StoE3 = new RotatePadding(new Point(-1, -1), false);
-    const StoE4 = new RotatePadding(new Point( 0,  2), false);
-    const StoE5 = new RotatePadding(new Point(-1,  2), true);
-    StoE1.ChangeNext(StoE2);
-    StoE2.ChangeNext(StoE3);
-    StoE3.ChangeNext(StoE4);
-    StoE4.ChangeNext(StoE5);
-    StoE5.ChangeNext(StoE1);
+    const EtoS1 = new Point( 0,  0);
+    const EtoS2 = new Point( 1,  0);
+    const EtoS3 = new Point( 1,  1);
+    const EtoS4 = new Point( 0, -2);
+    const EtoS5 = new Point( 1, -2);
+    const EtoS  = [EtoS1, EtoS2, EtoS3, EtoS4, EtoS5];
 
-    const StoW1 = new RotatePadding(new Point( 0,  0), false);
-    const StoW2 = new RotatePadding(new Point( 1,  0), false);
-    const StoW3 = new RotatePadding(new Point( 1,  1), false);
-    const StoW4 = new RotatePadding(new Point( 0,  2), false);
-    const StoW5 = new RotatePadding(new Point( 1,  2), true);
-    StoW1.ChangeNext(StoW2);
-    StoW2.ChangeNext(StoW3);
-    StoW3.ChangeNext(StoW4);
-    StoW4.ChangeNext(StoW5);
-    StoW5.ChangeNext(StoW1);
+    const StoE1 = new Point( 0,  0);
+    const StoE2 = new Point(-1,  0);
+    const StoE3 = new Point(-1, -1);
+    const StoE4 = new Point( 0,  2);
+    const StoE5 = new Point(-1,  2);
+    const StoE  = [StoE1, StoE2, StoE3, StoE4, StoE5];
 
-    const WtoS1 = new RotatePadding(new Point( 0,  0), false);
-    const WtoS2 = new RotatePadding(new Point(-1,  0), false);
-    const WtoS3 = new RotatePadding(new Point(-1,  1), false);
-    const WtoS4 = new RotatePadding(new Point( 0, -2), false);
-    const WtoS5 = new RotatePadding(new Point(-1, -2), true);
-    WtoS1.ChangeNext(WtoS2);
-    WtoS2.ChangeNext(WtoS3);
-    WtoS3.ChangeNext(WtoS4);
-    WtoS4.ChangeNext(WtoS5);
-    WtoS5.ChangeNext(WtoS1);
+    const StoW1 = new Point( 0,  0);
+    const StoW2 = new Point( 1,  0);
+    const StoW3 = new Point( 1,  1);
+    const StoW4 = new Point( 0,  2);
+    const StoW5 = new Point( 1,  2);
+    const StoW  = [StoW1, StoW2, StoW3, StoW4, StoW5];
 
-    const WtoN1 = new RotatePadding(new Point( 0,  0), false);
-    const WtoN2 = new RotatePadding(new Point(-2,  0), false);
-    const WtoN3 = new RotatePadding(new Point(-2,  1), false);
-    const WtoN4 = new RotatePadding(new Point( 0, -2), false);
-    const WtoN5 = new RotatePadding(new Point(-1, -2), true);
-    WtoN1.ChangeNext(WtoN2);
-    WtoN2.ChangeNext(WtoN3);
-    WtoN3.ChangeNext(WtoN4);
-    WtoN4.ChangeNext(WtoN5);
-    WtoN5.ChangeNext(WtoN1);
+    const WtoS1 = new Point( 0,  0);
+    const WtoS2 = new Point(-1,  0);
+    const WtoS3 = new Point(-1,  1);
+    const WtoS4 = new Point( 0, -2);
+    const WtoS5 = new Point(-1, -2);
+    const WtoS  = [WtoS1, WtoS2, WtoS3, WtoS4, WtoS5];
 
-    const srs = 
-    {
-        'NtoW': NtoW1,
-        'NtoE': NtoE1,
-        'EtoN': EtoN1,
-        'EtoS': EtoS1,
-        'StoE': StoE1,
-        'StoW': StoW1,
-        'WtoS': WtoS1,
-        'WtoN': WtoN1,
-    };
-    
+    const WtoN1 = new Point( 0,  0);
+    const WtoN2 = new Point(-2,  0);
+    const WtoN3 = new Point(-2,  1);
+    const WtoN4 = new Point( 0, -2);
+    const WtoN5 = new Point(-1, -2);
+    const WtoN  = [WtoN1, WtoN2, WtoN3, WtoN4, WtoN5];
+
+    const srs = new SRSTransition();
+    srs.RegistTransition('NtoW', NtoW);
+    srs.RegistTransition('NtoE', NtoE);
+    srs.RegistTransition('EtoN', EtoN);
+    srs.RegistTransition('EtoS', EtoS);
+    srs.RegistTransition('StoE', StoE);
+    srs.RegistTransition('StoW', StoW);
+    srs.RegistTransition('WtoS', WtoS);
+    srs.RegistTransition('WtoN', WtoN);
+
     let tetriMino = new TetriMino(block, origin, shape);
     let rotatableTetriMino = new RotatableTetriMino(tetriMino, srs);
-    
+
     describe('北向きのテトリミノ', ()=>
     {
         it('SRSなし', ()=>
@@ -317,7 +283,7 @@ describe('RotatableTetriMino', ()=>
         });
     });
 
-    
+
     describe('西向きのテトリミノ', ()=>
     {
         it('SRSなし', ()=>

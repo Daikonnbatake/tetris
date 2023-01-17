@@ -59,14 +59,14 @@ describe('Field', ()=>
             let test_field = new Field(10, 20);
             let test_block = new Block(1, false);
 
-            test_field.DrawMutable(0, 0, test_block);
+            test_field.DrawMutable(5, 5, test_block);
             test_field.FlushMutable();
             const field = test_field.GetField();
 
-            if (field[0][0].GetType() === 1){}
+            if (field[5][5].GetType() === 1){}
             else throw new Error('失敗(正しくない種類)');
 
-            if (!field[0][0].IsHidden()){}
+            if (!field[5][5].IsHidden()){}
             else throw new Error('失敗(正しくない可視性)');
         });
     });

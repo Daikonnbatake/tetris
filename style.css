@@ -11,7 +11,7 @@ body {
     background-color: #222222;
 }
 
-#canvas {
+.display {
     display: block;
     background-color: blue;
     image-rendering: pixelated;

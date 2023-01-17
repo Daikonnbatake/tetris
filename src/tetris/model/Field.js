@@ -105,7 +105,7 @@ class Field
         for (const index of this.#deleted)
         {
             this.#blockLines.splice(index, 1);
-            this.#blockLines.push(new BlockLine(width));
+            this.#blockLines.splice(0, 0, new BlockLine(width));
         }
     }
 
@@ -178,19 +178,30 @@ class Field
     +-----------------------------------------------------------------*/
     GetCollision()
     {
-        let result = new Collision();
-        let x = 0;
-        let y = 0;
+        let   result = new Collision();
+        const width  = this.#blockLines[0].GetLine().length;
+        const height = this.#blockLines.length;
 
-        for (let line of this.#blockLines)
+        for (let y = -1; y <= height; y++)
         {
-            for (let block of line.GetLine())
+            for (let x = -1; x <= width; x++)
             {
-                if (!(block.IsHidden())) result.Add(x, y);
-                x += 1;
+                if (x === -1 || x === width)
+                {
+                    result.Add(x, y);
+                    continue;
+                }
+
+                if (y === -1 || y === height)
+                {
+                    result.Add(x, y);
+                    continue;
+                }
+
+                const block  = this.#blockLines[y].GetLine()[x];
+                const isShow = !(block.IsHidden());
+                if (isShow) result.Add(x, y);
             }
-            x = 0;
-            y += 1;
         }
 
         return result;
