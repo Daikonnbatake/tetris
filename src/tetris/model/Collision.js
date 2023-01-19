@@ -50,6 +50,9 @@ class Collision
     *
     * 説明: 重なり判定を行う.
     *
+    * 引数:
+    *   Collision collision: 判定対象.
+    *
     +-----------------------------------------------------------------*/
     IsOverlap(collision)
     {
@@ -64,6 +67,32 @@ class Collision
 
             if (result) return true;
         }
+        return false;
+    }
+
+
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: 接地判定を行う.
+    *
+    * 引数:
+    *   Collision collision: 判定対象.
+    *
+    +-----------------------------------------------------------------*/
+    IsGround(collision)
+    {
+        for (const point of collision.#points)
+        {
+            const result = this.#points.find(value =>
+            {
+                const x = point.GetX() === value.GetX();
+                const y = point.GetY() === value.GetY() - 1;
+                return x && y;
+            });
+
+            if (result) return true;
+        }
+
         return false;
     }
 }

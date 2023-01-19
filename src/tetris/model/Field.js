@@ -182,7 +182,7 @@ class Field
         const width  = this.#blockLines[0].GetLine().length;
         const height = this.#blockLines.length;
 
-        for (let y = -1; y <= height; y++)
+        for (let y = 0; y <= height; y++)
         {
             for (let x = -1; x <= width; x++)
             {
@@ -192,7 +192,7 @@ class Field
                     continue;
                 }
 
-                if (y === -1 || y === height)
+                if (y === height)
                 {
                     result.Add(x, y);
                     continue;

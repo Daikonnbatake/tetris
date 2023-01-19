@@ -42,7 +42,6 @@ class TetriMinoBuilder
         const srsName = this.#relation[tetriMinoName];
         const mino    = this.#minoCache.GetTetriMino(tetriMinoName);
         const srs     = this.#srsCache.GetTransition(srsName);
-        console.log(mino);
 
         return new ControllableTetriMino(mino, srs);
     }

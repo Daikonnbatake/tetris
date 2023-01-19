@@ -70,24 +70,31 @@ var origin = new Point(1, 1);
 var T  = [new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(2, 1)];
 var L  = [new Point(2, 0), new Point(0, 1), new Point(1, 1), new Point(2, 1)];
 var S  = [new Point(1, 0), new Point(2, 0), new Point(0, 1), new Point(1, 1)];
+var I  = [new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1)];
+var O  = [new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1)];
 
 var tetriMinoCache = new TetriMinoCache();
 var srsCache       = new SRSTransitionCache();
 var builder        = new TetriMinoBuilder(tetriMinoCache, srsCache);
+var puzzle         = new Puzzle(10, 20);
 
 tetriMinoCache.RegistTetriMino('T', new Block(6, false), origin, T);
 tetriMinoCache.RegistTetriMino('L', new Block(5, false), origin, L);
 tetriMinoCache.RegistTetriMino('S', new Block(2, false), origin, S);
+tetriMinoCache.RegistTetriMino('I', new Block(0, false), new Point(0.5, 0.5), I);
+tetriMinoCache.RegistTetriMino('O', new Block(1, false), new Point(0.5, 0.5), O);
 srsCache.RegistTransition(srs);
 builder.RelationMinoToSRS('T', 'default');
 builder.RelationMinoToSRS('L', 'default');
 builder.RelationMinoToSRS('S', 'default');
+builder.RelationMinoToSRS('I', 'default');
+builder.RelationMinoToSRS('O', 'default');
 
-var field  = new Field(10, 20);
-var mino   = builder.Generate('S');
+var minos   = ['S', 'L', 'T', 'I', 'O'];
 var f = true;
 
-console.log(tetriMinoCache);
+var mino = minos[Math.floor(Math.random() * 2) + 3];
+puzzle.NewTetriMino(builder.Generate(mino));
 
 
 async function Start()
@@ -129,21 +136,24 @@ function Update()
     a.Join();
     a.Draw(Canvas.Context());
 
-
+    console.clear();
     const blocks = ImageCache.GetImage('blocks');
     const fieldDrawer = new FieldDrawer(144, 0, 8, 8, blocks);
-    const collision = field.GetCollision();
-    field.ClearMutable();
-    if (f) mino.Fall(collision);
-    else mino.TurnLeft(collision);
+
+    puzzle.Fall();
+    //if (f)
+    //else puzzle.TurnLeft();
     f = !f;
-    for (const p of mino.GetPoints())
+
+    if (keyA === KeyState.Push()) puzzle.MoveLeft();
+    if (keyD === KeyState.Push()) puzzle.MoveRight();
+    if (puzzle.IsGround())
     {
-        const x = p.GetX();
-        const y = p.GetY();
-        const b = mino.GetBlock();
-        field.DrawMutable(x, y, b);
+        puzzle.FixTetriMino();
+        let mino = minos[Math.floor(Math.random() * 2) + 3];
+        puzzle.NewTetriMino(builder.Generate(mino));
     }
-    fieldDrawer.Draw(field.GetField());
+
+    fieldDrawer.Draw(puzzle.GetField());
     Canvas.FlipBuffer();
 }
