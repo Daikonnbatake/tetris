@@ -32,11 +32,13 @@ class TetriMinoHolizontalController
 
     HoldLeft()
     {
-        if (this.#isPushRight) return;
+        if (this.#isPushRight) return false;
 
-        const das = this.#das.Enable();
-        const arr = this.#arr.Enable();
-        if (das && arr) this.#puzzle.MoveLeft();
+        const das    = this.#das.Enable();
+        const arr    = this.#arr.Enable();
+        const result = das && arr;
+        if (result) this.#puzzle.MoveLeft();
+        return result;
     }
 
 
@@ -63,11 +65,13 @@ class TetriMinoHolizontalController
 
     HoldRight()
     {
-        if (this.#isPushLeft) return;
+        if (this.#isPushLeft) return false;
 
-        const das = this.#das.Enable();
-        const arr = this.#arr.Enable();
-        if (das && arr) this.#puzzle.MoveRight();
+        const das    = this.#das.Enable();
+        const arr    = this.#arr.Enable();
+        const result = das && arr;
+        if (result) this.#puzzle.MoveRight();
+        return result;
     }
 
 

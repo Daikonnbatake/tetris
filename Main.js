@@ -99,14 +99,20 @@ builder.RelationMinoToSRS('I', 'default');
 builder.RelationMinoToSRS('O', 'default');
 
 var minos   = ['S', 'Z', 'L', 'J', 'T', 'I', 'O'];
-var f1 = true;
-var f2 = true;
 
 var mino = minos[Math.floor(Math.random() * 7)];
 puzzle.NewTetriMino(builder.Generate(mino));
 
-var tetriMinoFallControll = new TetriMinoFallControll(puzzle, 1000);
+var tetriMinoFallControll = new TetriMinoFallController(puzzle, 1000);
 var tetriMonoHolizontalControll = new TetriMinoHolizontalController(puzzle, 176, 32);
+var fixJudge = new TetriMinoFixJudge(15, 500);
+
+var tetriMinoController = new TetriMinoController(
+    puzzle,
+    tetriMinoFallControll,
+    tetriMonoHolizontalControll,
+    fixJudge
+);
 
 
 /* UIの部分 ----------------------------------------------------------*/
@@ -146,7 +152,6 @@ async function Start()
 function Update()
 {
     Canvas.Clear();
-    let ry = Math.floor(Math.random() * 18);
     image = ImageCache.GetImage('tetris');
     let a = new Sprite(image);
     let t = a.GetTransform();
@@ -176,22 +181,19 @@ function Update()
     t.SetPosition(16, 8);
     a.Draw(Canvas.Context(), 32 + keyD);
 
-    t.SetPosition(0, 24);
-    a.Join();
-    a.Draw(Canvas.Context());
-
 
     /* テトリスの部分 ----------------------------------------------- */
     const blocks = ImageCache.GetImage('blocks');
     const fieldDrawer = new FieldDrawer(144, 0, 8, 8, blocks);
 
-    tetriMinoFallControll.Update();
+    tetriMinoController.Update();
 
-    if (puzzle.IsGround())
+    if (tetriMinoController.IsFixed())
     {
         puzzle.FixTetriMino();
         let mino = minos[Math.floor(Math.random() * 7)];
         puzzle.NewTetriMino(builder.Generate(mino));
+        tetriMinoController.Reset();
     }
 
     fieldDrawer.Draw(puzzle.GetField());
@@ -234,20 +236,12 @@ function Update()
     else
     {
         GameTimer.UnPause();
-        if (keyW === KeyState.Push()) tetriMinoFallControll.HardDrop();
-        if (keyS === KeyState.Hold()) tetriMinoFallControll.SoftDrop();
-
-        if (keyD === KeyState.Push()) tetriMonoHolizontalControll.PushRight();
-        if (keyD === KeyState.Hold()) tetriMonoHolizontalControll.HoldRight();
-        if (keyD === KeyState.Pull()) tetriMonoHolizontalControll.PullRight();
-
-        if (keyA === KeyState.Push()) tetriMonoHolizontalControll.PushLeft();
-        if (keyA === KeyState.Hold()) tetriMonoHolizontalControll.HoldLeft();
-        if (keyA === KeyState.Pull()) tetriMonoHolizontalControll.PullLeft();
-
-
-        if (keyPositive === KeyState.Push()) puzzle.TurnLeft();
-        if (keyNegative === KeyState.Push()) puzzle.TurnRight();
+        tetriMinoController.HardDropButton(keyW);
+        tetriMinoController.SoftDropButton(keyS);
+        tetriMinoController.MoveLeftButton(keyA);
+        tetriMinoController.MoveRightButton(keyD);
+        tetriMinoController.TurnLeftButton(keyPositive);
+        tetriMinoController.TurnRightButton(keyNegative);
     }
 
     pausePanel.SetPosition(80, 48);

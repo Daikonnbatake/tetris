@@ -137,6 +137,12 @@ class Puzzle
     }
 
 
+    GetTetriMinoPosition()
+    {
+        return this.#tetriMino.GetPosition();
+    }
+
+
     IsGround()
     {
         return this.#tetriMino.IsGround(this.#fieldCollision);

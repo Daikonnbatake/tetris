@@ -1,4 +1,4 @@
-class TetriMinoFallControll
+class TetriMinoFallController
 {
     #fallDelay;
     #lastFallTime;

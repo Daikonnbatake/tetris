@@ -188,6 +188,17 @@ class ControllableTetriMino
     }
 
 
+    GetPosition()
+    {
+        const posX    = this.#position.GetX();
+        const posY    = this.#position.GetY();
+        const originX = this.#tetriMino.GetOrigin().GetX();
+        const originY = this.#tetriMino.GetOrigin().GetY();
+        const result = new Point(posX + originX, posY + originY);
+        return result;
+    }
+
+
     IsGround(fieldCollision)
     {
         let result = new Collision();

@@ -101,7 +101,6 @@ class Field
             }
         }
 
-        console.clear();
         // 行を削除
         for (const index of this.#deleted)
         {
@@ -112,9 +111,6 @@ class Field
         {
             this.#blockLines.splice(0, 0, new BlockLine(width));
         }
-
-        console.log(this.#deleted);
-        console.log(this.#blockLines);
     }
 
 
