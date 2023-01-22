@@ -31,7 +31,6 @@ class ControllableTetriMino
             const x = point.GetX() + pos.GetX() - origin.GetX() - 1;
             const y = point.GetY() + pos.GetY() - origin.GetY() ;
             collision.Add(x, y);
-            console.log(x, y);
         }
 
         if (!fieldCollision.IsOverlap(collision))

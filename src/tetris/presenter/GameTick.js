@@ -1,67 +1,25 @@
-// Presenter -----------------------------------------------------------
-
 class GameTick
 {
-    #tickEvent; // Event:  定期的にtickイベントを発行する.
-    #tickCount; // number: 1秒間に行う内部処理の回数.
+    #tickEvent; // SimpleEvent:  定期的にtickイベントを発行する.
 
-    // この中でtickを非同期的に呼ぶ.
-    constructor(){}
+    constructor(tickCount)
+    {
+        this.#tickEvent = new SimpleEvent();
+        const interval = 1000 / tickCount;
 
-    // 1秒間に決められた回数のTick()イベントを発行する.
-    Tick(){}
+        setInterval(
+            this.#tickEvent.Invoke.bind(this.#tickEvent),
+            interval
+        );
+    }
 
-    // イベントを購読する.
-    Subscribe(func){}
+    Subscribe(callback)
+    {
+        this.#tickEvent.Add(callback);
+    }
 
-    // イベント購読をやめる.
-    UnSubscribe(func){}
-}
-
-
-class GameManager
-{
-    #tetriMinoControler;
-    #gameRenderer;
-
-}
-
-
-class TetriMinoControler
-{
-    #puzzle;            // model層のインスタンス.
-    #holdInterval;      // 左右長押し時、高速移動するまでの時間.
-    #holdSpeed;         // 左右長押し時、フィールド端に着くまでの時間.
-    #freefallControler; // 自然落下の速度を制御する.
-    #moveQueue;         // 移動クエリを溜めるキュー.
-
-    constructor(puzzle){}
-
-    // 現在のフレームでの操作結果を出力する.
-    Tick(){}
-    MoveLeft(){}
-    MoveRight(){}
-    TurnLeft(){}
-    TurnRight(){}
-}
-
-
-// View ----------------------------------------------------------------
-
-class GameRenderer
-{
-    #puzzleRenderer;
-
-    Tick(){}
-    Pause(){}
-    UnPause(){}
-}
-
-
-class PuzzleRenderer
-{
-    #fieldRenderer;
-    #holdRenderer;
-    #nextRenderer;
-    #backGroundRenderer;
+    UnSubscribe(callback)
+    {
+        this.#tickEvent.Remove(callback);
+    }
 }

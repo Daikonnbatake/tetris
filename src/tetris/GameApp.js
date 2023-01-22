@@ -1,15 +1,17 @@
 function AppUpdate()
 {
     InputManager.Update();
+    GameTimer.Update()
     Update();
 }
 
 window.onload = async ()=>
 {
-    Canvas.Start(240, 160);              // Canvas の初期化.
-    InputManager.Start();                // InputManager の初期化.
+    let   gameTick = new GameTick(60);
 
-    await Start();                       // アプリケーションの初期化.
-    //AppUpdate();
-    setInterval('AppUpdate()', 1000/2); // アプリケーションの更新処理.
+    Canvas.Start(240, 160);         // Canvas の初期化.
+    InputManager.Start();           // InputManager の初期化.
+    await Start();                  // アプリケーションの初期化.
+
+    gameTick.Subscribe(AppUpdate);  // アプリケーションの更新処理.
 }

@@ -101,12 +101,20 @@ class Field
             }
         }
 
+        console.clear();
         // 行を削除
         for (const index of this.#deleted)
         {
             this.#blockLines.splice(index, 1);
+        }
+
+        for (const index of this.#deleted)
+        {
             this.#blockLines.splice(0, 0, new BlockLine(width));
         }
+
+        console.log(this.#deleted);
+        console.log(this.#blockLines);
     }
 
 
@@ -203,6 +211,9 @@ class Field
                 if (isShow) result.Add(x, y);
             }
         }
+
+        result.Add(-1, -1);
+        result.Add(width, -1);
 
         return result;
     }

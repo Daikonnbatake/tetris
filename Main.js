@@ -1,3 +1,5 @@
+/* テトリスの部分 -----------------------------------------------------*/
+
 const NtoW1 = new Point( 0,  0);
 const NtoW2 = new Point( 1,  0);
 const NtoW3 = new Point( 1, -1);
@@ -69,7 +71,9 @@ var block  = new Block(6, false);
 var origin = new Point(1, 1);
 var T  = [new Point(1, 0), new Point(0, 1), new Point(1, 1), new Point(2, 1)];
 var L  = [new Point(2, 0), new Point(0, 1), new Point(1, 1), new Point(2, 1)];
+var J  = [new Point(0, 0), new Point(0, 1), new Point(1, 1), new Point(2, 1)];
 var S  = [new Point(1, 0), new Point(2, 0), new Point(0, 1), new Point(1, 1)];
+var Z  = [new Point(0, 0), new Point(1, 0), new Point(1, 1), new Point(2, 1)];
 var I  = [new Point(0, 1), new Point(1, 1), new Point(2, 1), new Point(3, 1)];
 var O  = [new Point(0, 0), new Point(0, 1), new Point(1, 0), new Point(1, 1)];
 
@@ -80,29 +84,65 @@ var puzzle         = new Puzzle(10, 20);
 
 tetriMinoCache.RegistTetriMino('T', new Block(6, false), origin, T);
 tetriMinoCache.RegistTetriMino('L', new Block(5, false), origin, L);
+tetriMinoCache.RegistTetriMino('J', new Block(4, false), origin, J);
 tetriMinoCache.RegistTetriMino('S', new Block(2, false), origin, S);
-tetriMinoCache.RegistTetriMino('I', new Block(0, false), new Point(0.5, 0.5), I);
+tetriMinoCache.RegistTetriMino('Z', new Block(3, false), origin, Z);
+tetriMinoCache.RegistTetriMino('I', new Block(0, false), new Point(1.5, 1.5), I);
 tetriMinoCache.RegistTetriMino('O', new Block(1, false), new Point(0.5, 0.5), O);
 srsCache.RegistTransition(srs);
 builder.RelationMinoToSRS('T', 'default');
 builder.RelationMinoToSRS('L', 'default');
+builder.RelationMinoToSRS('J', 'default');
 builder.RelationMinoToSRS('S', 'default');
+builder.RelationMinoToSRS('Z', 'default');
 builder.RelationMinoToSRS('I', 'default');
 builder.RelationMinoToSRS('O', 'default');
 
-var minos   = ['S', 'L', 'T', 'I', 'O'];
-var f = true;
+var minos   = ['S', 'Z', 'L', 'J', 'T', 'I', 'O'];
+var f1 = true;
+var f2 = true;
 
-var mino = minos[Math.floor(Math.random() * 2) + 3];
+var mino = minos[Math.floor(Math.random() * 7)];
 puzzle.NewTetriMino(builder.Generate(mino));
 
+var tetriMinoFallControll = new TetriMinoFallControll(puzzle, 1000);
+var tetriMonoHolizontalControll = new TetriMinoHolizontalController(puzzle, 176, 32);
 
+
+/* UIの部分 ----------------------------------------------------------*/
+
+var buttonPresenterTOP     = new ButtonPresenter();
+var buttonPresenterBOTTOM  = new ButtonPresenter(true);
+var buttonPresenterYES     = new ButtonPresenter(true);
+var buttonPresenterNO      = new ButtonPresenter(true);
+var uiController           = new UIController(buttonPresenterTOP);
+
+buttonPresenterTOP.GetRelation().SetBottom(buttonPresenterBOTTOM);
+buttonPresenterTOP.GetRelation().SetChild(buttonPresenterYES);
+buttonPresenterBOTTOM.GetRelation().SetTop(buttonPresenterTOP);
+
+buttonPresenterYES.GetRelation().SetRight(buttonPresenterNO);
+buttonPresenterNO.GetRelation().SetLeft(buttonPresenterYES);
+var frameCount = 0;
+var frameTimer = 0;
+
+//uiController.Show();
+
+
+
+/* 初期化 ------------------------------------------------------------*/
 async function Start()
 {
+    await ImageCache.AddImage('./img/button.png', 'button');
     await ImageCache.AddImage('./img/tetris.png', 'tetris');
     await ImageCache.AddImage('./img/blocks.png', 'blocks');
+    await ImageCache.AddImage('./img/9slicePanel.png', 'panel');
+    await ImageCache.AddImage('./img/yesButton.png', 'yesButton');
+    await ImageCache.AddImage('./img/noButton.png', 'noButton');
 }
 
+
+/* 更新処理 ----------------------------------------------------------*/
 function Update()
 {
     Canvas.Clear();
@@ -112,23 +152,27 @@ function Update()
     let t = a.GetTransform();
     a.Split(new Size(8, 8));
 
+    const keyW = InputManager.GetKeyState('ArrowUp');
+    const keyA = InputManager.GetKeyState('ArrowLeft');
+    const keyS = InputManager.GetKeyState('ArrowDown');
+    const keyD = InputManager.GetKeyState('ArrowRight');
+    const keyPositive = InputManager.GetKeyState('z');
+    const keyNegative = InputManager.GetKeyState('x');
+    const keyEsc = InputManager.GetKeyState('Escape');
+
     // W
-    let keyW = InputManager.GetKeyState('w');
     t.SetPosition(8, 0);
     a.Draw(Canvas.Context(), 32 + keyW);
 
     // A
-    let keyA = InputManager.GetKeyState('a');
     t.SetPosition(0, 8);
     a.Draw(Canvas.Context(), 32 + keyA);
 
     // S
-    let keyS = InputManager.GetKeyState('s');
     t.SetPosition(8, 8);
     a.Draw(Canvas.Context(), 32 + keyS);
 
     // D
-    let keyD = InputManager.GetKeyState('d');
     t.SetPosition(16, 8);
     a.Draw(Canvas.Context(), 32 + keyD);
 
@@ -136,24 +180,101 @@ function Update()
     a.Join();
     a.Draw(Canvas.Context());
 
-    console.clear();
+
+    /* テトリスの部分 ----------------------------------------------- */
     const blocks = ImageCache.GetImage('blocks');
     const fieldDrawer = new FieldDrawer(144, 0, 8, 8, blocks);
 
-    puzzle.Fall();
-    //if (f)
-    //else puzzle.TurnLeft();
-    f = !f;
+    tetriMinoFallControll.Update();
 
-    if (keyA === KeyState.Push()) puzzle.MoveLeft();
-    if (keyD === KeyState.Push()) puzzle.MoveRight();
     if (puzzle.IsGround())
     {
         puzzle.FixTetriMino();
-        let mino = minos[Math.floor(Math.random() * 2) + 3];
+        let mino = minos[Math.floor(Math.random() * 7)];
         puzzle.NewTetriMino(builder.Generate(mino));
     }
 
     fieldDrawer.Draw(puzzle.GetField());
+
+
+    /* UIの部分 ----------------------------------------------------- */
+
+    let buttonImage    = new Sprite(ImageCache.GetImage('button'));
+    let buttonImageYes = new Sprite(ImageCache.GetImage('yesButton'));
+    let buttonImageNo  = new Sprite(ImageCache.GetImage('noButton'));
+    let panelImage     = new Sprite(ImageCache.GetImage('panel'));
+    let buttonYES      = new ButtonDrawer(buttonImageYes, buttonPresenterYES);
+    let buttonNO       = new ButtonDrawer(buttonImageNo, buttonPresenterNO);
+    let buttonTOP      = new ButtonDrawer(buttonImage, buttonPresenterTOP);
+    let buttonBOTTOM   = new ButtonDrawer(buttonImage, buttonPresenterBOTTOM);
+    let panel          = new PanelDrawer(panelImage, buttonPresenterYES);
+    let pausePanel     = new PanelDrawer(panelImage, buttonPresenterTOP);
+
+    buttonImage.Split(new Size(40, 16));
+    buttonImageYes.Split(new Size(40, 16));
+    buttonImageNo.Split(new Size(40, 16));
+    panelImage.Split(new Size(8, 8));
+
+    if (keyEsc === KeyState.Push())
+    {
+        if (uiController.IsShow()) uiController.Hide();
+        else uiController.Show();
+    }
+
+    if (uiController.IsShow())
+    {
+        GameTimer.Pause();
+        if (keyW === KeyState.Push()) uiController.PushUp();
+        if (keyS === KeyState.Push()) uiController.PushDown();
+        if (keyA === KeyState.Push()) uiController.PushLeft();
+        if (keyD === KeyState.Push()) uiController.PushRight();
+        if (keyPositive === KeyState.Push()) uiController.PushPositive();
+        if (keyNegative === KeyState.Push()) uiController.PushNegative();
+    }
+    else
+    {
+        GameTimer.UnPause();
+        if (keyW === KeyState.Push()) tetriMinoFallControll.HardDrop();
+        if (keyS === KeyState.Hold()) tetriMinoFallControll.SoftDrop();
+
+        if (keyD === KeyState.Push()) tetriMonoHolizontalControll.PushRight();
+        if (keyD === KeyState.Hold()) tetriMonoHolizontalControll.HoldRight();
+        if (keyD === KeyState.Pull()) tetriMonoHolizontalControll.PullRight();
+
+        if (keyA === KeyState.Push()) tetriMonoHolizontalControll.PushLeft();
+        if (keyA === KeyState.Hold()) tetriMonoHolizontalControll.HoldLeft();
+        if (keyA === KeyState.Pull()) tetriMonoHolizontalControll.PullLeft();
+
+
+        if (keyPositive === KeyState.Push()) puzzle.TurnLeft();
+        if (keyNegative === KeyState.Push()) puzzle.TurnRight();
+    }
+
+    pausePanel.SetPosition(80, 48);
+    pausePanel.SetSize(10, 8);
+    pausePanel.Draw();
+
+    buttonTOP.SetOrigin(0, 0);
+    buttonTOP.SetPosition(100, 64);
+    buttonTOP.Draw();
+
+    buttonBOTTOM.SetOrigin(0, 0);
+    buttonBOTTOM.SetPosition(100, 88);
+    buttonBOTTOM.Draw();
+
+    panel.SetPosition(64, 40);
+    panel.SetSize(14, 10);
+    panel.Draw();
+
+    buttonYES.SetOrigin(0, 0);
+    buttonYES.SetPosition(76, 96);
+    buttonYES.Draw();
+
+    buttonNO.SetOrigin(0, 0);
+    buttonNO.SetPosition(124, 96);
+    buttonNO.Draw();
+
+
+    /* 描画 --------------------------------------------------------- */
     Canvas.FlipBuffer();
 }

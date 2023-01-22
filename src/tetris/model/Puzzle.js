@@ -125,6 +125,7 @@ class Puzzle
     {
         if (this.#tetriMinoFixed) return;
         this.#field.FlushMutable();
+        this.#field.DeleteLines();
         this.#fieldCollision = this.#field.GetCollision();
         this.#tetriMinoFixed = true;
     }
