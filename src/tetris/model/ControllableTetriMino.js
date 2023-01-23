@@ -6,11 +6,20 @@
 
 class ControllableTetriMino
 {
-    #tetriMino;
-    #position;
-    #isGround;
+    #tetriMino; // RotatableTetriMino: 回転可能なテトリミノ.
+    #position;  // Point:              このテトリミノの位置.
+    #isGround;  // bool:               地面についているなら true.
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: コンストラクタ.
+    *
+    * 引数:
+    *   TetriMino     tetriMino:     テトリミノの形状.
+    *   SRSTransition srsTransition: テトリミノのSRSズラし設定.
+    *
+    +-----------------------------------------------------------------*/
     constructor(tetriMino, srsTransition)
     {
         this.#tetriMino = new RotatableTetriMino(tetriMino, srsTransition);
@@ -19,6 +28,14 @@ class ControllableTetriMino
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: テトリミノを左に1マス移動させる.
+    *
+    * 引数:
+    *   Collision fieldCollision: フィールドの衝突判定.
+    *
+    +-----------------------------------------------------------------*/
     MoveLeft(fieldCollision)
     {
         const points    = this.#tetriMino.GetPoints();
@@ -40,6 +57,14 @@ class ControllableTetriMino
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: テトリミノを右に1マス移動させる.
+    *
+    * 引数:
+    *   Collision fieldCollision: フィールドの衝突判定.
+    *
+    +-----------------------------------------------------------------*/
     MoveRight(fieldCollision)
     {
         const points    = this.#tetriMino.GetPoints();
@@ -61,6 +86,14 @@ class ControllableTetriMino
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: テトリミノを左に90度回転させる.
+    *
+    * 引数:
+    *   Collision fieldCollision: フィールドの衝突判定.
+    *
+    +-----------------------------------------------------------------*/
     TurnLeft(fieldCollision)
     {
         this.#tetriMino.TurnLeft();
@@ -101,6 +134,14 @@ class ControllableTetriMino
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: テトリミノを右に90度回転させる.
+    *
+    * 引数:
+    *   Collision fieldCollision: フィールドの衝突判定.
+    *
+    +-----------------------------------------------------------------*/
     TurnRight(fieldCollision)
     {
         this.#tetriMino.TurnRight();
@@ -141,6 +182,14 @@ class ControllableTetriMino
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: テトリミノを1マス落下させる.
+    *
+    * 引数:
+    *   Collision fieldCollision: フィールドの衝突判定.
+    *
+    +-----------------------------------------------------------------*/
     Fall(fieldCollision)
     {
         const points    = this.#tetriMino.GetPoints();
@@ -164,12 +213,28 @@ class ControllableTetriMino
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: テトリミノを構成するブロックを取得する.
+    *
+    * 戻り値:
+    *   Block: このテトリミノを構成するブロック.
+    *
+    +-----------------------------------------------------------------*/
     GetBlock()
     {
         return this.#tetriMino.GetBlock();
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: テトリミノのフィールド上での形状を表す座標の配列を取得する.
+    *
+    * 戻り値:
+    *   Array<Point>: このテトリミノの形状.
+    *
+    +-----------------------------------------------------------------*/
     GetPoints()
     {
         let   result = new Array();
@@ -188,6 +253,14 @@ class ControllableTetriMino
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: テトリミノの中心座標を取得する(フィールド上の中心位置).
+    *
+    * 戻り値:
+    *   Point: このテトリミノの中心座標.
+    *
+    +-----------------------------------------------------------------*/
     GetPosition()
     {
         const posX    = this.#position.GetX();
@@ -199,6 +272,14 @@ class ControllableTetriMino
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: このテトリミノが接地しているなら true を返す.
+    *
+    * 戻り値:
+    *   bool: このテトリミノが接地しているなら true.
+    *
+    +-----------------------------------------------------------------*/
     IsGround(fieldCollision)
     {
         let result = new Collision();

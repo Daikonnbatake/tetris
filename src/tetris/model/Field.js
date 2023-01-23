@@ -15,6 +15,10 @@ class Field
     *
     * 説明: コンストラクタ.
     *
+    * 引数:
+    *   number width:  このフィールドの横幅.
+    *   number height: このフィールドの高さ.
+    *
     +-----------------------------------------------------------------*/
     constructor(width, height)
     {
@@ -95,10 +99,7 @@ class Field
         this.#deleted = new Array();
         for (let y = height-1; 0 <= y; y--)
         {
-            if (this.#blockLines[y].IsComplete())
-            {
-                this.#deleted.push(y);
-            }
+            if (this.#blockLines[y].IsComplete()) this.#deleted.push(y);
         }
 
         // 行を削除
@@ -107,6 +108,7 @@ class Field
             this.#blockLines.splice(index, 1);
         }
 
+        // 消した行を補う
         for (const index of this.#deleted)
         {
             this.#blockLines.splice(0, 0, new BlockLine(width));
@@ -119,7 +121,7 @@ class Field
     * 説明: フィールドの状態を取得する(重いので脳死で呼ばないこと).
     *
     * 戻り値:
-    *   Array<Array<Block>>: フィールド.
+    *   Array<Array<Block>>: 移動可能ブロックを含むフィールドの全体像.
     *
     +-----------------------------------------------------------------*/
     GetField()
@@ -128,8 +130,8 @@ class Field
 
         /*- note ------------------------------------------------------+
         * JS の仕様上、愚直にオブジェクトを返してしまうと参照渡し状態に
-        * なってしまい、戻り値をいじられると変な挙動をするのでゴリ押しで
-        * ディープコピーしてます.
+        * なってしまい、戻り値をいじられるとコピー元も変化してしまうので
+        * ゴリ押しでディープコピーしてます.
         +-------------------------------------------------------------*/
         for (const line of this.#blockLines)
         {
@@ -163,7 +165,7 @@ class Field
     * 説明: 前回の操作によって削除された行を取得する.
     *
     * 戻り値:
-    *   Array<number>: 削除された行の行数.
+    *   Array<number>: 削除された行数の配列.
     *
     +-----------------------------------------------------------------*/
     GetDeletedLines()

@@ -15,7 +15,7 @@ class InputManager
     * 説明: キー押下コールバック.
     *
     * 引数:
-    *   KeyboardEvent  event:  イベント.
+    *   KeyboardEvent event: イベント.
     *
     +-----------------------------------------------------------------*/
     static #KeyDown(event)
@@ -30,7 +30,7 @@ class InputManager
     * 説明: キー解放コールバック.
     *
     * 引数:
-    *   KeyboardEvent  event:  イベント.
+    *   KeyboardEvent event: イベント.
     *
     +-----------------------------------------------------------------*/
     static #KeyUp(event)
@@ -45,7 +45,7 @@ class InputManager
     * 説明: キーの状態を取得する.
     *
     * 引数:
-    *   string  key:  取得したいキーの名前.
+    *   string key: 取得したいキーの名前.
     *
     * 戻り値:
     *   number: キーの状態.

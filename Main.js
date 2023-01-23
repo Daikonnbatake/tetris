@@ -88,7 +88,7 @@ tetriMinoCache.RegistTetriMino('J', new Block(4, false), origin, J);
 tetriMinoCache.RegistTetriMino('S', new Block(2, false), origin, S);
 tetriMinoCache.RegistTetriMino('Z', new Block(3, false), origin, Z);
 tetriMinoCache.RegistTetriMino('I', new Block(0, false), new Point(1.5, 1.5), I);
-tetriMinoCache.RegistTetriMino('O', new Block(1, false), new Point(0.5, 0.5), O);
+tetriMinoCache.RegistTetriMino('O', new Block(1, false), new Point(1.5, 1.5), O);
 srsCache.RegistTransition(srs);
 builder.RelationMinoToSRS('T', 'default');
 builder.RelationMinoToSRS('L', 'default');
@@ -117,10 +117,10 @@ var tetriMinoController = new TetriMinoController(
 
 /* UIの部分 ----------------------------------------------------------*/
 
-var buttonPresenterTOP     = new ButtonPresenter();
-var buttonPresenterBOTTOM  = new ButtonPresenter(true);
-var buttonPresenterYES     = new ButtonPresenter(true);
-var buttonPresenterNO      = new ButtonPresenter(true);
+var buttonPresenterTOP     = new UIElement();
+var buttonPresenterBOTTOM  = new UIElement(true);
+var buttonPresenterYES     = new UIElement(true);
+var buttonPresenterNO      = new UIElement(true);
 var uiController           = new UIController(buttonPresenterTOP);
 
 buttonPresenterTOP.GetRelation().SetBottom(buttonPresenterBOTTOM);
@@ -190,10 +190,8 @@ function Update()
 
     if (tetriMinoController.IsFixed())
     {
-        puzzle.FixTetriMino();
         let mino = minos[Math.floor(Math.random() * 7)];
         puzzle.NewTetriMino(builder.Generate(mino));
-        tetriMinoController.Reset();
     }
 
     fieldDrawer.Draw(puzzle.GetField());

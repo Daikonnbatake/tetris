@@ -66,9 +66,17 @@ class Canvas
     static FlipBuffer()
     {
         const tmp = this.#backBuffer;
+
         this.#backBuffer = this.#canvas;
-        this.#canvas = tmp;
+        this.#canvas     = tmp;
+
+        /*-- Note -----------------------------------------------------+
+        * ローカルのHTMLから実行する時、
+        * Canvas の getImageData() を使ったダブルバッファリングは
+        * Cross-Origin エラーを吐くので DOM 要素の表示非表示で無理矢理
+        * ダブルバッファっぽいものを実装している。
+        +-------------------------------------------------------------*/
         this.#backBuffer.style.display = 'none';
-        this.#canvas.style.display = 'block';
+        this.#canvas.style.display     = 'block';
     }
 }

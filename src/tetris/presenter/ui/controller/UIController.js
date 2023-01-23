@@ -6,9 +6,18 @@
 
 class UIController
 {
-    #stack;
-    #root;
+    #stack; // UIStack: UIのスタック.
+    #root;  // UI要素:  UIのroot要素.
 
+
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: コンストラクタ.
+    *
+    * 引数:
+    *   UI要素 rootItem: UIのroot要素.
+    *
+    +-----------------------------------------------------------------*/
     constructor(rootItem)
     {
         this.#stack = new UIStack(rootItem);
@@ -17,6 +26,11 @@ class UIController
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: UIのroot階層を表示する.
+    *
+    +-----------------------------------------------------------------*/
     Show()
     {
         if (this.#stack.IsEmpty()) this.#stack = new UIStack(this.#root);
@@ -26,6 +40,11 @@ class UIController
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: UI全体を非表示にする.
+    *
+    +-----------------------------------------------------------------*/
     Hide()
     {
         while(!this.#stack.IsEmpty())
@@ -38,12 +57,25 @@ class UIController
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: 少なくともUIのroot階層が表示されているなら true を返す.
+    *
+    * 戻り値:
+    *   bool: root要素が表示されているなら true を返す.
+    *
+    +-----------------------------------------------------------------*/
     IsShow()
     {
         return this.#root.GetState().IsShow();
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: 左移動キーが押された場合の処理.
+    *
+    +-----------------------------------------------------------------*/
     PushLeft()
     {
         const current = this.#stack.GetCurrent();
@@ -63,6 +95,11 @@ class UIController
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: 右移動キーが押された場合の処理.
+    *
+    +-----------------------------------------------------------------*/
     PushRight()
     {
         const current = this.#stack.GetCurrent();
@@ -82,6 +119,11 @@ class UIController
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: 上移動キーが押された場合の処理.
+    *
+    +-----------------------------------------------------------------*/
     PushUp()
     {
         const current = this.#stack.GetCurrent();
@@ -101,6 +143,11 @@ class UIController
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: 下移動キーが押された場合の処理.
+    *
+    +-----------------------------------------------------------------*/
     PushDown()
     {
         const current = this.#stack.GetCurrent();
@@ -120,12 +167,17 @@ class UIController
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: 決定キーが押された場合の処理.
+    *
+    +-----------------------------------------------------------------*/
     PushPositive()
     {
         let current = this.#stack.GetCurrent();
         current.GetAction().GetPositiveButton().OnPush();
 
-        if (current.GetRelation().IsBackButton())
+        if (current.GetRelation().PushPositiveToBack())
         {
             const currentState = current.GetState();
             currentState.Hide();
@@ -144,17 +196,18 @@ class UIController
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: キャンセルキーが押された場合の処理.
+    *
+    +-----------------------------------------------------------------*/
     PushNegative()
     {
-        let current = this.#stack.GetCurrent();
+        let   current = this.#stack.GetCurrent();
+        const currentState = current.GetState();
         current.GetAction().GetNegativeButton().OnPush();
-
-        if (current.GetRelation().GetChild() == null) return;
-
-        this.#stack.Dive();
-        current = this.#stack.GetCurrent();
-
-        current.GetState().Focus();
-        current.GetState().Show();
+        currentState.Hide();
+        currentState.Distract();
+        this.#stack.Levitate();
     }
 }

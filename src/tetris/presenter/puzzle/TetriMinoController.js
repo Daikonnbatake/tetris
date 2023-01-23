@@ -1,11 +1,28 @@
+/***********************************************************************
+ *
+ *   テトリミノを制御するクラス.
+ *
+***********************************************************************/
+
 class TetriMinoController
 {
-    #puzzle;
-    #fallController;
-    #holizontalController;
-    #fixJudge;
+    #puzzle;               // Puzzle:                        制御対象.
+    #fallController;       // TetriMinoFallController:       落下制御.
+    #holizontalController; // TetriMinoHolizontalController: 水平制御.
+    #fixJudge;             // TetriMinoFixJudge:             固定判定.
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: コンストラクタ.
+    *
+    * 引数:
+    *   Puzzle                        puzzle:               制御対象.
+    *   TetriMinoFallController       fallController:       落下制御.
+    *   TetriMinoHolizontalController holizontalController: 水平制御.
+    *   TetriMinoFixJudge             fixJudge:             固定判定.
+    *
+    +-----------------------------------------------------------------*/
     constructor(puzzle, fallController, holizontalController, fixJudge)
     {
         this.#puzzle               = puzzle;
@@ -16,28 +33,51 @@ class TetriMinoController
     }
 
 
-    Reset()
-    {
-        this.#fixJudge.Reset();
-    }
-
-
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: テトリミノの縦移動と固定を更新する.
+    *
+    +-----------------------------------------------------------------*/
     Update()
     {
         this.#fallController.Update();
         const nowY = this.#puzzle.GetTetriMinoPosition().GetY();
+
         this.#fixJudge.UpdateY(nowY);
-    }
 
-
-    IsFixed()
-    {
         const isGround = this.#puzzle.IsGround();
         const isFixed  = this.#fixJudge.IsFixed();
-        return isGround && isFixed;
+
+        if (isGround && isFixed)
+        {
+            this.#puzzle.FixTetriMino();
+            this.#fixJudge.Reset();
+        }
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: テトリミノが固定済みなら true を返す.
+    *
+    * 戻り値:
+    *   bool: テトリミノの固定状況.
+    *
+    +-----------------------------------------------------------------*/
+    IsFixed()
+    {
+        return this.#puzzle.IsFixed();
+    }
+
+
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: 左移動キーの入力を受け取る.
+    *
+    * 引数:
+    *   KeyState keyState: キー入力の状態.
+    *
+    +-----------------------------------------------------------------*/
     MoveLeftButton(keyState)
     {
         if (keyState === KeyState.Push())
@@ -62,6 +102,14 @@ class TetriMinoController
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: 右移動キーの入力を受け取る.
+    *
+    * 引数:
+    *   KeyState keyState: キー入力の状態.
+    *
+    +-----------------------------------------------------------------*/
     MoveRightButton(keyState)
     {
         if (keyState === KeyState.Push())
@@ -86,6 +134,14 @@ class TetriMinoController
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: ハードドロップキーの入力を受け取る.
+    *
+    * 引数:
+    *   KeyState keyState: キー入力の状態.
+    *
+    +-----------------------------------------------------------------*/
     HardDropButton(keyState)
     {
         if (keyState === KeyState.Push())
@@ -97,6 +153,14 @@ class TetriMinoController
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: ソフトドロップキーの入力を受け取る.
+    *
+    * 引数:
+    *   KeyState keyState: キー入力の状態.
+    *
+    +-----------------------------------------------------------------*/
     SoftDropButton(keyState)
     {
         if (keyState === KeyState.Hold())
@@ -107,6 +171,14 @@ class TetriMinoController
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: 左回転キーの入力を受け取る.
+    *
+    * 引数:
+    *   KeyState keyState: キー入力の状態.
+    *
+    +-----------------------------------------------------------------*/
     TurnLeftButton(keyState)
     {
         if (keyState === KeyState.Push())
@@ -118,6 +190,14 @@ class TetriMinoController
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: 右回転キーの入力を受け取る.
+    *
+    * 引数:
+    *   KeyState keyState: キー入力の状態.
+    *
+    +-----------------------------------------------------------------*/
     TurnRightButton(keyState)
     {
         if (keyState === KeyState.Push())

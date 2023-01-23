@@ -1,29 +1,17 @@
 /***********************************************************************
  *
- *  UI 同士の関係性を表すクラス.
+ *   UI 同士の関係性を表すクラス.
  *
 ***********************************************************************/
 
 class UIRelation
 {
-    /*-----------------------------------------------------------------+
-    * 本当はよくないけど JavaScript では interface が使えないので
-    * ダックタイピングで代用。
-    *
-    * UI要素とは下記メソッド
-    *  - GetRelation() -> UIRelation {}
-    *  - GetAction() -> UIAction {}
-    *  - GetState() -> UIState {}
-    *
-    * を含むクラスを指すものとする。
-    +-----------------------------------------------------------------*/
-
-    #child;      // UI要素 | null: 子要素.
-    #left;       // UI要素 | null: 自分の左隣.
-    #right;      // UI要素 | null: 自分の右隣.
-    #top;        // UI要素 | null: 自分の上隣.
-    #bottom;     // UI要素 | null: 自分の下隣.
-    #backButton; // bool:          自身が「戻る」ボタンなら true.
+    #child;  // UIElement | null: 子要素.
+    #left;   // UIElement | null: 自分の左隣.
+    #right;  // UIElement | null: 自分の右隣.
+    #top;    // UIElement | null: 自分の上隣.
+    #bottom; // UIElement | null: 自分の下隣.
+    #goBack; // bool:             決定されたとき前の階層に戻るかどうか.
 
 
     /*-----------------------------------------------------------------+
@@ -31,17 +19,17 @@ class UIRelation
     * 説明: コンストラクタ.
     *
     * 引数:
-    *   bool backButton: 自身が「戻る」ボタンなら true.
+    *   bool goBack: 自分が決定されたとき前の階層に戻るなら true (任意).
     *
     +-----------------------------------------------------------------*/
-    constructor(backButton = false)
+    constructor(goBack = false)
     {
-        this.#child      = null;
-        this.#left       = null;
-        this.#right      = null;
-        this.#top        = null;
-        this.#bottom     = null;
-        this.#backButton = backButton;
+        this.#child  = null;
+        this.#left   = null;
+        this.#right  = null;
+        this.#top    = null;
+        this.#bottom = null;
+        this.#goBack = goBack;
     }
 
 
@@ -50,7 +38,7 @@ class UIRelation
     * 説明: 子要素を取得する.
     *
     * 戻り値:
-    *   UI要素 | null: 子要素.
+    *   UIElement | null: 子要素.
     *
     +-----------------------------------------------------------------*/
     GetChild()
@@ -64,7 +52,7 @@ class UIRelation
     * 説明: 左隣の要素を取得する.
     *
     * 戻り値:
-    *   UI要素 | null: 左隣の要素.
+    *   UIElement | null: 左隣の要素.
     *
     +-----------------------------------------------------------------*/
     GetLeft()
@@ -78,7 +66,7 @@ class UIRelation
     * 説明: 右隣の要素を取得する.
     *
     * 戻り値:
-    *   UI要素 | null: 右隣の要素.
+    *   UIElement | null: 右隣の要素.
     *
     +-----------------------------------------------------------------*/
     GetRight()
@@ -92,7 +80,7 @@ class UIRelation
     * 説明: 上隣の要素を取得する.
     *
     * 戻り値:
-    *   UI要素 | null: 上隣の要素.
+    *   UIElement | null: 上隣の要素.
     *
     +-----------------------------------------------------------------*/
     GetTop()
@@ -106,7 +94,7 @@ class UIRelation
     * 説明: 下隣の要素を取得する.
     *
     * 戻り値:
-    *   UI要素 | null: 下隣の要素.
+    *   UIElement | null: 下隣の要素.
     *
     +-----------------------------------------------------------------*/
     GetBottom()
@@ -117,15 +105,15 @@ class UIRelation
 
     /*-----------------------------------------------------------------+
     *
-    * 説明: 自身が「戻る」ボタンなら true.
+    * 説明: 自分が決定されたとき前の階層に戻るなら true.
     *
     * 戻り値:
-    *   bool: 自身が「戻る」ボタンかどうか.
+    *   bool: 自分が決定されたとき前の階層に戻るかどうか.
     *
     +-----------------------------------------------------------------*/
-    IsBackButton()
+    PushPositiveToBack()
     {
-        return this.#backButton;
+        return this.#goBack;
     }
 
 
@@ -134,7 +122,7 @@ class UIRelation
     * 説明: 子要素を設定する.
     *
     * 引数:
-    *   UI要素 | null: 子要素.
+    *   UIElement: 子要素.
     *
     +-----------------------------------------------------------------*/
     SetChild(element)
@@ -148,7 +136,7 @@ class UIRelation
     * 説明: 左隣の要素を設定する.
     *
     * 引数:
-    *   UI要素 | null: 左隣の要素.
+    *   UIElement: 左隣の要素.
     *
     +-----------------------------------------------------------------*/
     SetLeft(element)
@@ -162,7 +150,7 @@ class UIRelation
     * 説明: 右隣の要素を設定する.
     *
     * 引数:
-    *   UI要素 | null: 右隣の要素.
+    *   UIElement: 右隣の要素.
     *
     +-----------------------------------------------------------------*/
     SetRight(element)
@@ -176,7 +164,7 @@ class UIRelation
     * 説明: 上隣の要素を設定する.
     *
     * 引数:
-    *   UI要素 | null: 上隣の要素.
+    *   UIElement: 上隣の要素.
     *
     +-----------------------------------------------------------------*/
     SetTop(element)
@@ -190,7 +178,7 @@ class UIRelation
     * 説明: 下隣の要素を設定する.
     *
     * 引数:
-    *   UI要素 | null: 下隣の要素.
+    *   UIElement: 下隣の要素.
     *
     +-----------------------------------------------------------------*/
     SetBottom(element)

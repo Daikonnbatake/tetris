@@ -18,7 +18,7 @@ class Sprite
     * 説明: コンストラクタ.
     *
     * 引数:
-    *   Image   cachedImage:  キャッシュ済み画像.
+    *   Image cachedImage: キャッシュ済み画像.
     *
     +-----------------------------------------------------------------*/
     constructor(cachedImage)
@@ -64,8 +64,8 @@ class Sprite
     * 説明: 画像を分割する.
     *
     * 引数:
-    *   Size   tileSize:    分割サイズ(1ピースのサイズ).
-    *   Point  tileOffset:  分割を開始する位置のオフセット(任意).
+    *   Size  tileSize:   分割サイズ(1ピースのサイズ).
+    *   Point tileOffset: 分割を開始する位置のオフセット(任意).
     *
     +-----------------------------------------------------------------*/
     Split(tileSize, tileOffset = Point.Default())
@@ -108,8 +108,8 @@ class Sprite
     * 説明: この画像を描画する.
     *
     * 引数:
-    *   CanvasRenderingContext2D  renderTarget:  描画対象.
-    *   number                    tileIndex:     マップチップ番号(任意).
+    *   CanvasRenderingContext2D renderTarget: 描画対象.
+    *   number                   tileIndex:    マップチップ番号(任意).
     *
     +-----------------------------------------------------------------*/
     Draw(renderTarget, tileIndex = 0)
