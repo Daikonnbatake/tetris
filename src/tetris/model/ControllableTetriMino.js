@@ -23,7 +23,7 @@ class ControllableTetriMino
     constructor(tetriMino, srsTransition)
     {
         this.#tetriMino = new RotatableTetriMino(tetriMino, srsTransition);
-        this.#position  = new Point(4, -1);
+        this.#position  = new Point(4, 0);
         this.#isGround  = false;
     }
 
@@ -267,7 +267,7 @@ class ControllableTetriMino
         const posY    = this.#position.GetY();
         const originX = this.#tetriMino.GetOrigin().GetX();
         const originY = this.#tetriMino.GetOrigin().GetY();
-        const result = new Point(posX + originX, posY + originY);
+        const result = new Point(posX - originX, posY - originY);
         return result;
     }
 
@@ -295,5 +295,31 @@ class ControllableTetriMino
         }
 
         return fieldCollision.IsGround(result);
+    }
+
+
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: このテトリミノが既定の位置に出現できない場合1段上に移動させる.
+    *
+    * 引数:
+    *   Collision fieldCollision: フィールドの衝突判定.
+    *
+    +-----------------------------------------------------------------*/
+    SpawnCorrection(fieldCollision)
+    {
+        const points    = this.#tetriMino.GetPoints();
+        const origin    = this.#tetriMino.GetOrigin();
+        const pos       = this.#position;
+        const collision = new Collision();
+
+        for (const point of points)
+        {
+            const x = point.GetX() + pos.GetX() - origin.GetX();
+            const y = point.GetY() + pos.GetY() - origin.GetY() ;
+            collision.Add(x, y);
+        }
+
+        if (fieldCollision.IsOverlap(collision)) this.#position.SetY(-1);
     }
 }

@@ -40,7 +40,7 @@ class TetriMinoFallController
     Update()
     {
         const now  = GameTimer.GetTime();
-        const deff = now - this.#lastFallTime;
+        const diff = now - this.#lastFallTime;
 
         if (this.#isHardDrop)
         {
@@ -50,7 +50,7 @@ class TetriMinoFallController
             return;
         }
 
-        if (this.#isSoftDrop && (this.#fallDelay / 20) <= deff)
+        if (this.#isSoftDrop && (this.#fallDelay / 20) <= diff)
         {
             this.#puzzle.Fall();
             this.#isSoftDrop   = false;
@@ -58,7 +58,7 @@ class TetriMinoFallController
             return;
         }
 
-        if (this.#fallDelay <= deff)
+        if (this.#fallDelay <= diff)
         {
             this.#puzzle.Fall();
             this.#lastFallTime = now;

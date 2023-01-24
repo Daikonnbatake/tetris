@@ -24,10 +24,13 @@ class Sprite
     constructor(cachedImage)
     {
         this.#bitmap     = cachedImage;
-        this.#tileSize   = Size.Default();
         this.#tileCount  = Size.Default();
         this.#tileOffset = Point.Default();
         this.#transform  = Transform.Default();
+
+        let imageWidth   = this.#bitmap.width;
+        let imageHeight  = this.#bitmap.height;
+        this.#tileSize   = new Size(imageWidth, imageHeight);
     }
 
 

@@ -8,7 +8,6 @@ class TetriMinoFixJudge
     #toleranceCount; // number: 着地した後に操作を受け付ける回数.
     #toleranceTime;  // number: 着地した後無操作状態を許容する時間(ms).
     #isHardDrop;     // bool:   ハードドロップしたかどうか.
-    #isSoftFix;      // bool:   着地後にソフトドロップしたかどうか.
     #maximumY;       // number: Y の最大値(最低地上高).
     #operationCount; // number: 操作回数.
     #lastUpdateTime; // number: 最後に操作した時間(ms).
@@ -28,7 +27,6 @@ class TetriMinoFixJudge
         this.#toleranceCount = toleranceCount;
         this.#toleranceTime  = toleranceTime;
         this.#isHardDrop     = false;
-        this.#isSoftFix      = false;
         this.#maximumY       = 0;
         this.#operationCount = 0;
         this.#lastUpdateTime = 0;
@@ -43,7 +41,6 @@ class TetriMinoFixJudge
     Reset()
     {
         this.#isHardDrop     = false;
-        this.#isSoftFix      = false;
         this.#maximumY       = 0;
         this.#operationCount = 0;
         this.#lastUpdateTime = 0;
@@ -60,12 +57,12 @@ class TetriMinoFixJudge
     +-----------------------------------------------------------------*/
     IsFixed()
     {
-        const time = GameTimer.GetTime() - this.#lastUpdateTime;
-        if (this.#toleranceCount <= this.#operationCount) return true;
-        if (this.#toleranceTime < time) return true;
-        if (this.#isHardDrop) return true;
-        if (this.#isSoftFix) return true;
-        return false;
+        const time   = GameTimer.GetTime() - this.#lastUpdateTime;
+        let   result = false;
+        if (this.#toleranceCount <= this.#operationCount) result = true;
+        if (this.#toleranceTime  <= time) result = true;
+        if (this.#isHardDrop) result = true;
+        return result;
     }
 
 

@@ -41,6 +41,19 @@ class Puzzle
     {
         this.#tetriMino = controllableTetriMino;
         this.#tetriMinoFixed = false;
+
+        controllableTetriMino.SpawnCorrection(this.#fieldCollision);
+
+        this.#field.ClearMutable();
+        const points = this.#tetriMino.GetPoints();
+
+        for (const point of points)
+        {
+            const x = point.GetX();
+            const y = point.GetY();
+            const b = this.#tetriMino.GetBlock();
+            this.#field.DrawMutable(x, y, b);
+        }
     }
 
 

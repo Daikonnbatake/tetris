@@ -17,19 +17,27 @@ class TetriMinoController
     * 説明: コンストラクタ.
     *
     * 引数:
-    *   Puzzle                        puzzle:               制御対象.
-    *   TetriMinoFallController       fallController:       落下制御.
-    *   TetriMinoHolizontalController holizontalController: 水平制御.
-    *   TetriMinoFixJudge             fixJudge:             固定判定.
+    *   Puzzle puzzle:         制御対象.
+    *   number fallSpeed:      ミノが1マス落下するのにかかる時間(ms).
+    *   number dasDelay:       DAS のディレイ(ms).
+    *   number arrDelay:       ARR のディレイ(ms).
+    *   number toleranceCount: 接地後に許容する移動/回転の回数.
+    *   number toleranceTime:  接地後に許容する無操作時間(ms).
     *
     +-----------------------------------------------------------------*/
-    constructor(puzzle, fallController, holizontalController, fixJudge)
+    constructor(puzzle, fallSpeed, dasDelay, arrDelay,
+        toleranceCount, toleranceTime)
     {
-        this.#puzzle               = puzzle;
-        this.#fallController       = fallController;
-        this.#holizontalController = holizontalController;
-        this.#fixJudge             = fixJudge;
+        this.#puzzle = puzzle;
 
+        this.#fallController =
+        new TetriMinoFallController(puzzle, fallSpeed);
+
+        this.#holizontalController =
+        new TetriMinoHolizontalController(puzzle, dasDelay, arrDelay);
+
+        this.#fixJudge =
+        new TetriMinoFixJudge(toleranceCount, toleranceTime);
     }
 
 
@@ -40,6 +48,8 @@ class TetriMinoController
     +-----------------------------------------------------------------*/
     Update()
     {
+        if (this.#puzzle.IsFixed()) return;
+
         this.#fallController.Update();
         const nowY = this.#puzzle.GetTetriMinoPosition().GetY();
 
