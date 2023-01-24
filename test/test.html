@@ -1,0 +1,54 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Auto Test</title>
+    <link href="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="mocha"></div>
+
+    <script src="https://cdn.rawgit.com/mochajs/mocha/2.2.5/mocha.js"></script>
+    <script>mocha.setup('bdd')</script>
+
+
+    <!-- 依存関係 -->
+    <script src="../src/general/struct/Point.js"></script>
+
+
+
+    <!-- ここに検証対象 -->
+    <script src="../src/tetris/general/Block.js"></script>
+
+    <script src="../src/tetris/model/RotateDiff.js"></script>
+
+    <script src="../src/tetris/model/Collision.js"></script>
+    <script src="../src/tetris/model/BlockLine.js"></script>
+    <script src="../src/tetris/model/MutableBlock.js"></script>
+    <script src="../src/tetris/model/RotatePadding.js"></script>
+    <script src="../src/tetris/model/SRSTransition.js"></script>
+    <script src="../src/tetris/model/TetriMino.js"></script>
+    <script src="../src/tetris/model/TetriMinoAngle.js"></script>
+
+    <script src="../src/tetris/model/Field.js"></script>
+    <script src="../src/tetris/model/RotatableTetriMino.js"></script>
+
+
+
+    <!-- ここに検証用コード -->
+    <script src="./general/test_Block.js"></script>
+
+    <script src="./model/test_RotateDiff.js"></script>
+
+    <script src="./model/test_Collision.js"></script>
+    <script src="./model/test_BlockLine.js"></script>
+    <script src="./model/test_MutableBlock.js"></script>
+    <script src="./model/test_RotatePadding.js"></script>
+    <script src="./model/test_TetriMino.js"></script>
+    <script src="./model/test_TetriMinoAngle.js"></script>
+
+    <script src="./model/test_Field.js"></script>
+    <script src="./model/test_RotatableTetriMino.js"></script>
+
+
+
+    <script>mocha.run();</script>
+</body>

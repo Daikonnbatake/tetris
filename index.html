@@ -1,59 +1,110 @@
 <html>
     <head>
         <title>教育的なテトリス</title>
-        <style>
-            body {
-                margin: 0;
-                padding: 0;
-            }
-
-            #canvas {
-                display: block;
-                background-color: blue;
-                image-rendering: pixelated;
-                position: absolute;
-                margin: auto;
-                top: -60;
-                right: 0;
-                bottom: 0;
-                left: 0;
-                width: 800;
-                height: 720;
-            }
-        </style>
-    </head>
-    <body>
-        <canvas id="canvas"></canvas>
-
-        <!-- 入力関連クラスの読み込み -->
-        <script src="./lib/InputManager/InputManager.js"></script>
-        <script src="./lib/InputManager/InputMessage.js"></script>
-        <script src="./lib/InputManager/KeyObserver.js"></script>
-        <script src="./lib/InputManager/KeyState.js"></script>
+        <link rel="stylesheet" href="./style.css">
+        <!-- 設定ファイルの読み込み -->
 
         <!-- 描画関連クラスの読み込み -->
-        <script src="./lib/Renderer/Struct/Angle.js"></script>
-        <script src="./lib/Renderer/Struct/NormalizeNumber.js"></script>
-        <script src="./lib/Renderer/Struct/Pivot.js"></script>
-        <script src="./lib/Renderer/Struct/Point.js"></script>
-        <script src="./lib/Renderer/Struct/Rect.js"></script>
-        <script src="./lib/Renderer/Struct/Scale.js"></script>
-        <script src="./lib/Renderer/Struct/Size.js"></script>
-        <script src="./lib/Renderer/Struct/Transform.js"></script>
-        <script src="./lib/Renderer/Canvas.js"></script>
-        <script src="./lib/Renderer/ImageCache.js"></script>
-        <script src="./lib/Renderer/Sprite.js"></script>
+        <script src="./src/general/canvas/Canvas.js"></script>
+        <script src="./src/general/canvas/ImageCache.js"></script>
+        <script src="./src/general/canvas/Sprite.js"></script>
+
+        <!-- メッセージ関連クラスの読み込み -->
+        <script src="./src/general/event/Channel.js"></script>
+        <script src="./src/general/event/PubSubServer.js"></script>
+        <script src="./src/general/event/SimpleEvent.js"></script>
+
+        <!-- 入力関連クラスの読み込み -->
+        <script src="./src/general/input/InputManager.js"></script>
+        <script src="./src/general/input/InputMessage.js"></script>
+        <script src="./src/general/input/KeyObserver.js"></script>
+        <script src="./src/general/input/KeyState.js"></script>
+
+        <!-- 構造体の読み込み -->
+        <script src="./src/general/struct/Angle.js"></script>
+        <script src="./src/general/struct/NormalizeNumber.js"></script>
+        <script src="./src/general/struct/Pivot.js"></script>
+        <script src="./src/general/struct/Point.js"></script>
+        <script src="./src/general/struct/Rect.js"></script>
+        <script src="./src/general/struct/Scale.js"></script>
+        <script src="./src/general/struct/Size.js"></script>
+        <script src="./src/general/struct/Transform.js"></script>
+
+
+        <!-- テトリス全般 -->
+        <script src="./src/tetris/general/Block.js"></script>
+        <script src="./src/tetris/general/Counter.js"></script>
+        <script src="./src/tetris/general/Stopwatch.js"></script>
+
+        <!-- テトリスモデル -->
+        <script src="./src/tetris/model/BlockLine.js"></script>
+        <script src="./src/tetris/model/Collision.js"></script>
+        <script src="./src/tetris/model/ControllableTetriMino.js"></script>
+        <script src="./src/tetris/model/Field.js"></script>
+        <script src="./src/tetris/model/MutableBlock.js"></script>
+        <script src="./src/tetris/model/Puzzle.js"></script>
+        <script src="./src/tetris/model/RotatableTetriMino.js"></script>
+        <script src="./src/tetris/model/RotateDiff.js"></script>
+        <script src="./src/tetris/model/RotatePadding.js"></script>
+        <script src="./src/tetris/model/SRSTransition.js"></script>
+        <script src="./src/tetris/model/SRSTransitionCache.js"></script>
+        <script src="./src/tetris/model/SRSTransitionProperties.js"></script>
+        <script src="./src/tetris/model/TetriMino.js"></script>
+        <script src="./src/tetris/model/TetriMinoAngle.js"></script>
+        <script src="./src/tetris/model/TetriMinoBuilder.js"></script>
+        <script src="./src/tetris/model/TetriMinoCache.js"></script>
+        <script src="./src/tetris/model/TetriMinoHolder.js"></script>
+        <script src="./src/tetris/model/TetriMinoProperties.js"></script>
+        <script src="./src/tetris/model/TetriMinoRandomiser.js"></script>
+
+        <!-- テトリスプレゼンター -->
+        <script src="./src/tetris/presenter/GameTick.js"></script>
+        <script src="./src/tetris/presenter/GameTimer.js"></script>
+        <script src="./src/tetris/presenter/puzzle/AutoRepeatRate.js"></script>
+        <script src="./src/tetris/presenter/puzzle/DelayerAutoShift.js"></script>
+        <script src="./src/tetris/presenter/puzzle/TetriMinoController.js"></script>
+        <script src="./src/tetris/presenter/puzzle/TetriMinoFallController.js"></script>
+        <script src="./src/tetris/presenter/puzzle/TetriMinoFixJudge.js"></script>
+        <script src="./src/tetris/presenter/puzzle/TetriMinoHolizontalController.js"></script>
+        <script src="./src/tetris/presenter/ui/base/PhysicalButtonEvent.js"></script>
+        <script src="./src/tetris/presenter/ui/base/UIAction.js"></script>
+        <script src="./src/tetris/presenter/ui/base/UIRelation.js"></script>
+        <script src="./src/tetris/presenter/ui/base/UIState.js"></script>
+        <script src="./src/tetris/presenter/ui/controller/UIController.js"></script>
+        <script src="./src/tetris/presenter/ui/controller/UIStack.js"></script>
+        <script src="./src/tetris/presenter/ui/UIElement.js"></script>
+
+
+        <!-- テトリスビュー -->
+        <script src="./src/tetris/view/BlockDrawer.js"></script>
+        <script src="./src/tetris/view/FieldDrawer.js"></script>
+        <script src="./src/tetris/view/HoldDrawer.js"></script>
+        <script src="./src/tetris/view/NextsDrawer.js"></script>
+        <script src="./src/tetris/view/TetriMinoDrawer.js"></script>
+        <script src="./src/tetris/view/ui/ButtonDrawer.js"></script>
+        <script src="./src/tetris/view/ui/NineSliceIndex.js"></script>
+        <script src="./src/tetris/view/ui/PanelDrawer.js"></script>
+
 
         <!-- マクロ -->
-        <script src="./lib/Macro.js"></script>
-
-        <!-- フレームワーク -->
+        <script src="./src/general/Macro.js"></script>
 
 
         <!-- いじる部分 -->
         <script src="./Main.js"></script>
 
+        <!-- デバッグ用 -->
+        <script src="./src/tetris/view/ModelTestView.js"></script>
+
         <!-- エントリーポイント -->
-        <script src="./framework/GameApp.js"></script>
+        <script src="./src/tetris/GameApp.js"></script>
+
+    </head>
+    <body>
+        <div id="main">
+            <canvas id="canvas-a" class="display" hidden></canvas>
+            <canvas id="canvas-b" class="display" hidden></canvas>
+            <img id="frame" src="./img/frame.png"></img>
+        </div>
     </body>
 </html>
