@@ -161,7 +161,7 @@ function Update()
     const keyD        = InputManager.GetKeyState('ArrowRight');
     const keyPositive = InputManager.GetKeyState('z');
     const keyNegative = InputManager.GetKeyState('x');
-    const keySpace    = InputManager.GetKeyState('c');
+    const keySpace    = InputManager.GetKeyState(' ');
     const keyEsc      = InputManager.GetKeyState('Escape');
 
     // ポーズ/ポーズ解除の切替.
