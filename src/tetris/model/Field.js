@@ -26,7 +26,7 @@ class Field
         this.#blockLines = new Array();
         this.#deleted    = new Array();
 
-        for (let y=0; y<height; y++)
+        for (let y=0; y<(height*2); y++)
         {
             this.#blockLines.push(new BlockLine(width));
         }
@@ -47,12 +47,14 @@ class Field
     {
         const width  = this.#blockLines[0].GetLine().length;
         const height = this.#blockLines.length;
+
         const checkX = (0 <= x) && (x < width);
         const checkY = (0 <= y) && (y < height);
 
         if (checkX && checkY)
         {
-            this.#mutables.push(new MutableBlock(x, y, block));
+            const paddY = y + (height/2);
+            this.#mutables.push(new MutableBlock(x, paddY, block));
         }
     }
 
@@ -126,16 +128,18 @@ class Field
     +-----------------------------------------------------------------*/
     GetField()
     {
-        let result = new Array();
+        let   result = new Array();
+        const height = this.#blockLines.length / 2;
 
         /*- note ------------------------------------------------------+
         * JS の仕様上、愚直にオブジェクトを返してしまうと参照渡し状態に
         * なってしまい、戻り値をいじられるとコピー元も変化してしまうので
         * ゴリ押しでディープコピーしてます.
         +-------------------------------------------------------------*/
-        for (const line of this.#blockLines)
+        for (let y=height; y<(height*2); y++)
         {
-            let resultLine = new Array();
+            let   resultLine = new Array();
+            const line = this.#blockLines[y];
             result.push(resultLine);
 
             for (const block of line.GetLine())
@@ -152,7 +156,7 @@ class Field
         {
             const block  = mutable.GetBlock();
             const posX   = mutable.GetPosition().GetX();
-            const posY   = mutable.GetPosition().GetY();
+            const posY   = mutable.GetPosition().GetY() - height;
             result[posY][posX] = block;
         }
 
@@ -187,6 +191,7 @@ class Field
         let   result = new Collision();
         const width  = this.#blockLines[0].GetLine().length;
         const height = this.#blockLines.length;
+        const paddY  = height / 2;
 
         for (let y = 0; y <= height; y++)
         {
@@ -194,25 +199,21 @@ class Field
             {
                 if (x === -1 || x === width)
                 {
-                    result.Add(x, y);
+                    result.Add(x, y - paddY);
                     continue;
                 }
 
                 if (y === height)
                 {
-                    result.Add(x, y);
+                    result.Add(x, y - paddY);
                     continue;
                 }
 
                 const block  = this.#blockLines[y].GetLine()[x];
                 const isShow = !(block.IsHidden());
-                if (isShow) result.Add(x, y);
+                if (isShow) result.Add(x, y - paddY);
             }
         }
-
-        result.Add(-1, -1);
-        result.Add(width, -1);
-
         return result;
     }
 }
