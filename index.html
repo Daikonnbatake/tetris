@@ -37,29 +37,34 @@
         <script src="./src/tetris/general/Stopwatch.js"></script>
 
         <!-- テトリスモデル -->
-        <script src="./src/tetris/model/BlockLine.js"></script>
-        <script src="./src/tetris/model/Collision.js"></script>
-        <script src="./src/tetris/model/ControllableTetriMino.js"></script>
-        <script src="./src/tetris/model/Field.js"></script>
-        <script src="./src/tetris/model/MutableBlock.js"></script>
-        <script src="./src/tetris/model/Puzzle.js"></script>
-        <script src="./src/tetris/model/RotatableTetriMino.js"></script>
-        <script src="./src/tetris/model/RotateDiff.js"></script>
-        <script src="./src/tetris/model/RotatePadding.js"></script>
-        <script src="./src/tetris/model/SRSTransition.js"></script>
-        <script src="./src/tetris/model/SRSTransitionCache.js"></script>
-        <script src="./src/tetris/model/SRSTransitionProperties.js"></script>
-        <script src="./src/tetris/model/TetriMino.js"></script>
-        <script src="./src/tetris/model/TetriMinoAngle.js"></script>
-        <script src="./src/tetris/model/TetriMinoBuilder.js"></script>
-        <script src="./src/tetris/model/TetriMinoCache.js"></script>
-        <script src="./src/tetris/model/TetriMinoHolder.js"></script>
-        <script src="./src/tetris/model/TetriMinoProperties.js"></script>
-        <script src="./src/tetris/model/TetriMinoRandomiser.js"></script>
+        <script src="./src/tetris/model/puzzle/BlockLine.js"></script>
+        <script src="./src/tetris/model/puzzle/Collision.js"></script>
+        <script src="./src/tetris/model/puzzle/ControllableTetriMino.js"></script>
+        <script src="./src/tetris/model/puzzle/Field.js"></script>
+        <script src="./src/tetris/model/puzzle/MutableBlock.js"></script>
+        <script src="./src/tetris/model/puzzle/Puzzle.js"></script>
+        <script src="./src/tetris/model/puzzle/PuzzleActionState.js"></script>
+        <script src="./src/tetris/model/puzzle/RotatableTetriMino.js"></script>
+        <script src="./src/tetris/model/puzzle/RotateDiff.js"></script>
+        <script src="./src/tetris/model/puzzle/RotatePadding.js"></script>
+        <script src="./src/tetris/model/puzzle/SRSTransition.js"></script>
+        <script src="./src/tetris/model/puzzle/SRSTransitionCache.js"></script>
+        <script src="./src/tetris/model/puzzle/SRSTransitionProperties.js"></script>
+        <script src="./src/tetris/model/puzzle/TetriMino.js"></script>
+        <script src="./src/tetris/model/puzzle/TetriMinoAngle.js"></script>
+        <script src="./src/tetris/model/puzzle/TetriMinoBuilder.js"></script>
+        <script src="./src/tetris/model/puzzle/TetriMinoCache.js"></script>
+        <script src="./src/tetris/model/puzzle/TetriMinoHolder.js"></script>
+        <script src="./src/tetris/model/puzzle/TetriMinoProperties.js"></script>
+        <script src="./src/tetris/model/puzzle/TetriMinoRandomiser.js"></script>
+        <script src="./src/tetris/model/puzzle/TetriMinoSpinRule.js"></script>
+        <script src="./src/tetris/model/score/LineCounter.js"></script>
+        <script src="./src/tetris/model/score/ScoreCounter.js"></script>
 
         <!-- テトリスプレゼンター -->
         <script src="./src/tetris/presenter/GameTick.js"></script>
         <script src="./src/tetris/presenter/GameTimer.js"></script>
+        <script src="./src/tetris/presenter/GenerateFromGameRules.js"></script>
         <script src="./src/tetris/presenter/puzzle/AutoRepeatRate.js"></script>
         <script src="./src/tetris/presenter/puzzle/DelayerAutoShift.js"></script>
         <script src="./src/tetris/presenter/puzzle/TetriMinoController.js"></script>
@@ -81,9 +86,11 @@
         <script src="./src/tetris/view/HoldDrawer.js"></script>
         <script src="./src/tetris/view/NextsDrawer.js"></script>
         <script src="./src/tetris/view/TetriMinoDrawer.js"></script>
+        <script src="./src/tetris/view/TimeDrawer.js"></script>
         <script src="./src/tetris/view/ui/ButtonDrawer.js"></script>
         <script src="./src/tetris/view/ui/NineSliceIndex.js"></script>
         <script src="./src/tetris/view/ui/PanelDrawer.js"></script>
+        <script src="./src/tetris/view/ScoreDrawer.js"></script>
 
 
         <!-- マクロ -->
@@ -91,6 +98,7 @@
 
 
         <!-- いじる部分 -->
+        <script src="./GameRule.js"></script>
         <script src="./Main.js"></script>
 
         <!-- デバッグ用 -->

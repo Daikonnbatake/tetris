@@ -6,9 +6,11 @@
 
 class ControllableTetriMino
 {
-    #tetriMino; // RotatableTetriMino: 回転可能なテトリミノ.
-    #position;  // Point:              このテトリミノの位置.
-    #isGround;  // bool:               地面についているなら true.
+    #tetriMino;  // RotatableTetriMino: 回転可能なテトリミノ.
+    #position;   // Point:              このテトリミノの位置.
+    #isGround;   // bool:               地面についているなら true.
+    #lastAction; // 'move' | 'rotate':  最後に行った有効なアクション.
+    #srsCount;   // number:             前回の回転で行われた SRS の回数.
 
 
     /*-----------------------------------------------------------------+
@@ -52,6 +54,7 @@ class ControllableTetriMino
 
         if (!fieldCollision.IsOverlap(collision))
         {
+            this.#lastAction = PuzzleActionState.Move();
             this.#position.SetX(pos.GetX() - 1);
         }
     }
@@ -81,6 +84,7 @@ class ControllableTetriMino
 
         if (!fieldCollision.IsOverlap(collision))
         {
+            this.#lastAction = PuzzleActionState.Move();
             this.#position.SetX(pos.GetX() + 1);
         }
     }
@@ -98,6 +102,7 @@ class ControllableTetriMino
     {
         this.#tetriMino.TurnLeft();
         this.#tetriMino.ResetPadding();
+        this.#srsCount = 0;
 
         const pos       = this.#position;
         const origin    = this.#tetriMino.GetOrigin();
@@ -123,9 +128,11 @@ class ControllableTetriMino
                 this.#position.SetX(pos.GetX() + srsX);
                 this.#position.SetY(pos.GetY() + srsY);
                 this.#tetriMino.ResetPadding();
+                this.#lastAction = PuzzleActionState.Rotate();
                 return;
             }
 
+            this.#srsCount += 1;
             this.#tetriMino.NextPadding();
             isEnd = this.#tetriMino.IsEnd();
         }
@@ -146,6 +153,7 @@ class ControllableTetriMino
     {
         this.#tetriMino.TurnRight();
         this.#tetriMino.ResetPadding();
+        this.#srsCount = 0;
 
         const pos       = this.#position;
         const origin    = this.#tetriMino.GetOrigin();
@@ -171,9 +179,11 @@ class ControllableTetriMino
                 this.#position.SetX(pos.GetX() + srsX);
                 this.#position.SetY(pos.GetY() + srsY);
                 this.#tetriMino.ResetPadding();
+                this.#lastAction = PuzzleActionState.Rotate();
                 return;
             }
 
+            this.#srsCount += 1;
             this.#tetriMino.NextPadding();
             isEnd = this.#tetriMino.IsEnd();
         }
@@ -206,6 +216,7 @@ class ControllableTetriMino
 
         if (!fieldCollision.IsOverlap(collision))
         {
+            this.#lastAction = PuzzleActionState.Move();
             this.#position.SetY(pos.GetY() + 1);
         }
 
@@ -305,6 +316,9 @@ class ControllableTetriMino
     * 引数:
     *   Collision fieldCollision: フィールドの衝突判定.
     *
+    * 戻り値:
+    *   bool: 一段上に移動した場合 true を返す.
+    *
     +-----------------------------------------------------------------*/
     SpawnCorrection(fieldCollision)
     {
@@ -320,6 +334,64 @@ class ControllableTetriMino
             collision.Add(x, y);
         }
 
-        if (fieldCollision.IsOverlap(collision)) this.#position.SetY(-1);
+        if (fieldCollision.IsOverlap(collision))
+        {
+            this.#position.SetY(-1);
+            return true;
+        }
+
+        return false;
+    }
+
+
+    GetLastAction()
+    {
+        return this.#lastAction;
+    }
+
+
+    GetSRSCount()
+    {
+        if (this.#lastAction === PuzzleActionState.Move()) return 0;
+        return this.#srsCount;
+    }
+
+
+    // 自身に隣接しているブロックの座標の一覧を取得する.
+    GetAroundCollisions(fieldCollision)
+    {
+        let result   = new Set();
+        const points = this.#tetriMino.GetPoints();
+        const origin = this.#tetriMino.GetOrigin();
+        const pos    = this.#position;
+
+        for (const point of points)
+        {
+            const x = point.GetX() + pos.GetX() - origin.GetX();
+            const y = point.GetY() + pos.GetY() - origin.GetY();
+            const rawX = point.GetX() - origin.GetX();
+            const rawY = point.GetY() - origin.GetY();
+            let   n = new Collision();
+            let   e = new Collision();
+            let   s = new Collision();
+            let   w = new Collision();
+            n.Add(x, y-1);
+            e.Add(x+1, y);
+            s.Add(x, y+1);
+            w.Add(x-1, y);
+
+            if (fieldCollision.IsOverlap(n))
+                result.add(new Point(rawX, rawY - 1));
+
+            if (fieldCollision.IsOverlap(e))
+                result.add(new Point(rawX + 1, rawY));
+
+            if (fieldCollision.IsOverlap(s))
+                result.add(new Point(rawX, rawY + 1));
+
+            if (fieldCollision.IsOverlap(w))
+                result.add(new Point(rawX - 1, rawY));
+        }
+        return Array.from(result);
     }
 }

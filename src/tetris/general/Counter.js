@@ -24,10 +24,13 @@ class Counter
     *
     * 説明: カウントアップする.
     *
+    * 引数:
+    *   number vavlue: カウントする数(未指定の場合1カウントする).
+    *
     +-----------------------------------------------------------------*/
-    CountUp()
+    CountUp(value = 1)
     {
-        this.#counter += 1;
+        this.#counter += value;
     }
 
 

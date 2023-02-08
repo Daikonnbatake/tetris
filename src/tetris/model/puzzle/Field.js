@@ -94,20 +94,22 @@ class Field
     +-----------------------------------------------------------------*/
     DeleteLines()
     {
-        const width  = this.#blockLines[0].GetLine().length;
-        const height = this.#blockLines.length;
+        const width      = this.#blockLines[0].GetLine().length;
+        const height     = this.#blockLines.length;
+        const halfHeight = height / 2;
 
         // 削除する行をメモ.
         this.#deleted = new Array();
         for (let y = height-1; 0 <= y; y--)
         {
-            if (this.#blockLines[y].IsComplete()) this.#deleted.push(y);
+            const hy = y - halfHeight;
+            if (this.#blockLines[y].IsComplete()) this.#deleted.push(hy);
         }
 
         // 行を削除
         for (const index of this.#deleted)
         {
-            this.#blockLines.splice(index, 1);
+            this.#blockLines.splice(index + halfHeight, 1);
         }
 
         // 消した行を補う
