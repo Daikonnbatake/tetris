@@ -53,6 +53,9 @@ class Collision
     * 引数:
     *   Collision collision: 判定対象.
     *
+    * 戻り値:
+    *   bool: 重なっているなら true.
+    *
     +-----------------------------------------------------------------*/
     IsOverlap(collision)
     {
@@ -77,6 +80,9 @@ class Collision
     *
     * 引数:
     *   Collision collision: 判定対象.
+    *
+    * 戻り値:
+    *   bool: 設置しているなら true.
     *
     +-----------------------------------------------------------------*/
     IsGround(collision)

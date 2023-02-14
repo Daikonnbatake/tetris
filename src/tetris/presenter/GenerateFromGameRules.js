@@ -1,5 +1,20 @@
+/***********************************************************************
+ *
+ *   ゲームルールを参照して各種インスタンスを生成する.
+ *
+***********************************************************************/
+
 class GenerateFromGameRules
 {
+
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: SRSTransitionCache を生成する.
+    *
+    * 戻り値:
+    *   SRSTransitionCache: ゲームルールを元に生成したインスタンス.
+    *
+    +-----------------------------------------------------------------*/
     static SRSTransitionCache()
     {
         let srsCache = new SRSTransitionCache();
@@ -30,6 +45,14 @@ class GenerateFromGameRules
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: TetriMinoCache を生成する.
+    *
+    * 戻り値:
+    *   TetriMinoCache: ゲームルールを元に生成したインスタンス.
+    *
+    +-----------------------------------------------------------------*/
     static TetriMinoCache()
     {
         let minoCache = new TetriMinoCache();
@@ -57,6 +80,14 @@ class GenerateFromGameRules
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: テトリミノの名前の一覧を生成する.
+    *
+    * 戻り値:
+    *   Array<string>: テトリミノの名前の一覧.
+    *
+    +-----------------------------------------------------------------*/
     static KindOfMino()
     {
         let result = new Array();
@@ -69,6 +100,14 @@ class GenerateFromGameRules
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: Puzzle を生成する.
+    *
+    * 戻り値:
+    *   Puzzle: ゲームルールを元に生成したインスタンス.
+    *
+    +-----------------------------------------------------------------*/
     static Puzzle()
     {
         const fieldWidth  = GameRule.Field.FieldWidth;
@@ -77,6 +116,14 @@ class GenerateFromGameRules
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: TetriMinoController を生成する.
+    *
+    * 戻り値:
+    *   TetriMinoController: ゲームルールを元に生成したインスタンス.
+    *
+    +-----------------------------------------------------------------*/
     static TetriMinoController(puzzle)
     {
         const dasDelay     = GameRule.TetriMino.DASDelay;
@@ -91,6 +138,14 @@ class GenerateFromGameRules
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: TetriMinoBuilder を生成する.
+    *
+    * 戻り値:
+    *   TetriMinoBuilder: ゲームルールを元に生成したインスタンス.
+    *
+    +-----------------------------------------------------------------*/
     static TetriMinoBuilder(minoCache, srsCache)
     {
         let builder = new TetriMinoBuilder(minoCache, srsCache);

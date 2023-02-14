@@ -98,8 +98,6 @@ class Puzzle
             const b = this.#tetriMino.GetBlock();
             this.#field.DrawMutable(x, y, b);
         }
-
-        return;
     }
 
 
@@ -125,8 +123,6 @@ class Puzzle
             const b = this.#tetriMino.GetBlock();
             this.#field.DrawMutable(x, y, b);
         }
-
-        return;
     }
 
 
@@ -215,21 +211,6 @@ class Puzzle
         if (this.#tetriMinoFixed) return;
         if (this.#isGameOver) return;
 
-        // テトリミノのスピン判定(T-Spin等).
-        const mino         = this.#tetriMino;
-        const collision    = this.#fieldCollision;
-        const points       = mino.GetAroundCollisions(collision);
-        const srsCount     = mino.GetSRSCount();
-        const lastAction   = mino.GetLastAction();
-
-        for (const rule of this.#spinRules)
-        {
-            if (rule.Check(points, srsCount, lastAction))
-            {
-                this.#onMinoSpin.Invoke();
-            }
-        }
-
         // ライン消去
         this.#field.FlushMutable();
         this.#field.DeleteLines();
@@ -300,35 +281,44 @@ class Puzzle
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: ゲームオーバーなら true を返す.
+    *
+    * 戻り値:
+    *   bool: ゲームオーバーなら true.
+    *
+    +-----------------------------------------------------------------*/
     IsGameOver()
     {
         return this.#isGameOver;
     }
 
 
-    // ミノスピンイベントを購読
-    SubscribeOnMinoSpin(callback)
-    {
-        this.#onMinoSpin.Add(callback);
-    }
-
-
-    // ライン削除イベントを購読
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: 行削除時に呼び出すコールバックを登録する.
+    *
+    * 引数:
+    *   function callback: 行削除時に呼び出すコールバック.
+    *
+    +-----------------------------------------------------------------*/
     SubscribeOnDeleteLines(callback)
     {
         this.#onDeleteLines.Add(callback);
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: ゲームオーバー時に呼び出すコールバックを登録する.
+    *
+    * 引数:
+    *   function callback: ゲームオーバー時に呼び出すコールバック.
+    *
+    +-----------------------------------------------------------------*/
     SubscribeOnGameOVer(callback)
     {
         this.#onGameOver.Add(callback);
-    }
-
-
-    // テトリミノのスピン規則を追加(TSpin等)
-    AddSpinRule(tetriMinoSpinRule)
-    {
-        this.#spinRules.push(tetriMinoSpinRule);
     }
 }
