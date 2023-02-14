@@ -6,9 +6,9 @@
 
 class ControllableTetriMino
 {
-    #tetriMino; // RotatableTetriMino: 回転可能なテトリミノ.
-    #position;  // Point:              このテトリミノの位置.
-    #isGround;  // bool:               地面についているなら true.
+    #tetriMino;  // RotatableTetriMino: 回転可能なテトリミノ.
+    #position;   // Point:              このテトリミノの位置.
+    #isGround;   // bool:               地面についているなら true.
 
 
     /*-----------------------------------------------------------------+
@@ -46,7 +46,7 @@ class ControllableTetriMino
         for (const point of points)
         {
             const x = point.GetX() + pos.GetX() - origin.GetX() - 1;
-            const y = point.GetY() + pos.GetY() - origin.GetY() ;
+            const y = point.GetY() + pos.GetY() - origin.GetY();
             collision.Add(x, y);
         }
 
@@ -305,6 +305,9 @@ class ControllableTetriMino
     * 引数:
     *   Collision fieldCollision: フィールドの衝突判定.
     *
+    * 戻り値:
+    *   bool: 一段上に移動した場合 true を返す.
+    *
     +-----------------------------------------------------------------*/
     SpawnCorrection(fieldCollision)
     {
@@ -320,6 +323,12 @@ class ControllableTetriMino
             collision.Add(x, y);
         }
 
-        if (fieldCollision.IsOverlap(collision)) this.#position.SetY(-1);
+        if (fieldCollision.IsOverlap(collision))
+        {
+            this.#position.SetY(-1);
+            return true;
+        }
+
+        return false;
     }
 }

@@ -1,7 +1,25 @@
+/***********************************************************************
+ *
+ *   テトリミノを描画するクラス.
+ *
+***********************************************************************/
+
 class TetriMinoDrawer
 {
-    #blockDrawer;
-    #blockSize;
+    #blockDrawer; // BlockDrawer: ブロックを描画するクラス.
+    #blockSize;   // Size:        ブロックの大きさ.
+
+
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: コンストラクタ.
+    *
+    * 引数:
+    *   number blockWidth:  ブロック1つの横幅.
+    *   number blockHeight: ブロック1つの高さ.
+    *   string image:       ブロックの画像のパスまたはエイリアス.
+    *
+    +-----------------------------------------------------------------*/
     constructor(blockWidth, blockHeight, image)
     {
         this.#blockDrawer = new BlockDrawer(blockWidth, blockHeight, image);
@@ -9,6 +27,16 @@ class TetriMinoDrawer
     }
 
 
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: テトリミノを描画する.
+    *
+    * 引数:
+    *   number    x:         描画する位置のX座標.
+    *   number    y:         描画する位置のY座標.
+    *   TetriMino tetriMino: 描画するテトリミノ.
+    *
+    +-----------------------------------------------------------------*/
     Draw(x, y, tetriMino)
     {
         const points      = tetriMino.GetPoints();

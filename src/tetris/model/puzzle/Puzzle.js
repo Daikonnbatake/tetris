@@ -6,10 +6,16 @@
 
 class Puzzle
 {
-    #field;          // Field:                 フィールド.
-    #fieldCollision; // Collision:             衝突判定のキャッシュ.
-    #tetriMino;      // ControllableTetriMino: 操作可能なテトリミノ.
-    #tetriMinoFixed; // bool:                  テトリミノの固定状況.
+    #field;          // Field:                    フィールド.
+    #fieldCollision; // Collision:                衝突判定のキャッシュ.
+    #tetriMino;      // ControllableTetriMino:    操作可能なテトリミノ.
+    #tetriMinoFixed; // bool:                     テトリミノの固定状況.
+    #isGameOver;     // bool:                     ゲームオーバー判定.
+    #spinRules;      // Array<TetriMinoSpinRule>: 各種スピンの規則.
+
+    #onDeleteLines;  // SimpleEvent: ライン削除時に呼ばれる.
+    #onMinoSpin;     // SimpleEvent: スピンを検知した際に呼ばれる.
+    #onGameOver;     // SimpleEvent: ゲームオーバーの際に呼ばれる.
 
 
     /*-----------------------------------------------------------------+
@@ -26,6 +32,11 @@ class Puzzle
         this.#field = new Field(fieldWidth, fieldHeight);
         this.#fieldCollision = this.#field.GetCollision();
         this.#tetriMinoFixed = false;
+        this.#isGameOver     = false;
+        this.#spinRules      = new Array();
+        this.#onDeleteLines  = new SimpleEvent();
+        this.#onMinoSpin     = new SimpleEvent();
+        this.#onGameOver     = new SimpleEvent();
     }
 
 
@@ -39,10 +50,18 @@ class Puzzle
     +-----------------------------------------------------------------*/
     NewTetriMino(controllableTetriMino)
     {
+        if (this.#isGameOver) return;
+
         this.#tetriMino = controllableTetriMino;
         this.#tetriMinoFixed = false;
 
-        controllableTetriMino.SpawnCorrection(this.#fieldCollision);
+        const field = this.#fieldCollision;
+
+        if (controllableTetriMino.SpawnCorrection(field))
+        {
+            this.#isGameOver = true;
+            console.log('gameover');
+        }
 
         this.#field.ClearMutable();
         const points = this.#tetriMino.GetPoints();
@@ -65,6 +84,7 @@ class Puzzle
     MoveLeft()
     {
         if (this.#tetriMinoFixed) return;
+        if (this.#isGameOver) return;
 
         this.#field.ClearMutable();
         this.#tetriMino.MoveLeft(this.#fieldCollision);
@@ -89,6 +109,7 @@ class Puzzle
     MoveRight()
     {
         if (this.#tetriMinoFixed) return;
+        if (this.#isGameOver) return;
 
         this.#field.ClearMutable();
         this.#tetriMino.MoveRight(this.#fieldCollision);
@@ -113,6 +134,7 @@ class Puzzle
     TurnLeft()
     {
         if (this.#tetriMinoFixed) return;
+        if (this.#isGameOver) return;
 
         this.#field.ClearMutable();
         this.#tetriMino.TurnLeft(this.#fieldCollision);
@@ -137,6 +159,7 @@ class Puzzle
     TurnRight()
     {
         if (this.#tetriMinoFixed) return;
+        if (this.#isGameOver) return;
 
         this.#field.ClearMutable();
         this.#tetriMino.TurnRight(this.#fieldCollision);
@@ -161,6 +184,7 @@ class Puzzle
     Fall()
     {
         if (this.#tetriMinoFixed) return;
+        if (this.#isGameOver) return;
 
         this.#field.ClearMutable();
         this.#tetriMino.Fall(this.#fieldCollision);
@@ -179,16 +203,25 @@ class Puzzle
 
     /*-----------------------------------------------------------------+
     *
-    * 説明: テトリミノを90度左に回転させる.
+    * 説明: テトリミノを固定する.
     *
     +-----------------------------------------------------------------*/
     FixTetriMino()
     {
         if (this.#tetriMinoFixed) return;
+        if (this.#isGameOver) return;
+
+        // ライン消去
         this.#field.FlushMutable();
         this.#field.DeleteLines();
         this.#fieldCollision = this.#field.GetCollision();
         this.#tetriMinoFixed = true;
+        const deletedLines = this.#field.GetDeletedLines()
+
+        if (0 < deletedLines.length)
+        {
+            this.#onDeleteLines.Invoke(deletedLines);
+        }
     }
 
 
@@ -245,5 +278,47 @@ class Puzzle
     IsFixed()
     {
         return this.#tetriMinoFixed;
+    }
+
+
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: ゲームオーバーなら true を返す.
+    *
+    * 戻り値:
+    *   bool: ゲームオーバーなら true.
+    *
+    +-----------------------------------------------------------------*/
+    IsGameOver()
+    {
+        return this.#isGameOver;
+    }
+
+
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: 行削除時に呼び出すコールバックを登録する.
+    *
+    * 引数:
+    *   function callback: 行削除時に呼び出すコールバック.
+    *
+    +-----------------------------------------------------------------*/
+    SubscribeOnDeleteLines(callback)
+    {
+        this.#onDeleteLines.Add(callback);
+    }
+
+
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: ゲームオーバー時に呼び出すコールバックを登録する.
+    *
+    * 引数:
+    *   function callback: ゲームオーバー時に呼び出すコールバック.
+    *
+    +-----------------------------------------------------------------*/
+    SubscribeOnGameOVer(callback)
+    {
+        this.#onGameOver.Add(callback);
     }
 }
