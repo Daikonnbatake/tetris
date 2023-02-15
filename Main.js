@@ -1,11 +1,8 @@
-/* 初期化 */
 async function Start()
 {
     await TetrisInitialize();
 }
 
-
-/* 更新処理 */
 function Update()
 {
     if (IsGameOver())
