@@ -8,6 +8,7 @@ var tetrisController = GenerateFromGameRules.TetriMinoController(puzzle);
 var random           = new TetriMinoRandomiser(GenerateFromGameRules.KindOfMino());
 var holder           = new TetriMinoHolder();
 var lineCounter      = new LineCounter();
+var levelCounter     = new LevelCounter();
 
 var nowTetriMinoName = random.GetNext();
 puzzle.NewTetriMino(builder.Generate(nowTetriMinoName));
@@ -107,6 +108,17 @@ function Update()
         }
 
         tetrisController.Update();
+
+
+        const lines = lineCounter.GetDeletedLineCount();
+        const level = levelCounter.GetNowLevel();
+        if (Math.floor(lines / 1) != level - 1 && level < GameRule.Field.MaxLevel)
+        {
+            levelCounter.LevelUp();
+            const level = levelCounter.GetNowLevel();
+            console.log(level);
+            tetrisController.ChangeFallDelay(1/level * 1000);
+        }
     }
 
     /* テトリスの描画 ----------------------------------------------- */
@@ -145,7 +157,7 @@ function Update()
     );
 
     timeDrawer.Draw(192, 59, GameTimer.GetTime());
-    scoreDrawer.Draw(192, 87, 1);
+    scoreDrawer.Draw(192, 87, levelCounter.GetNowLevel());
     scoreDrawer.Draw(192, 115, lineCounter.GetDeletedLineCount());
 
     if (puzzle.IsGameOver())
@@ -165,7 +177,6 @@ function Update()
 
     buttonImage.Split(new Size(48, 24));
     panelImage.Split(new Size(8, 8));
-
 
     panel.SetPosition(64, 40);
     panel.SetSize(14, 10);

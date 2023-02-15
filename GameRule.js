@@ -18,6 +18,7 @@ const GameRule =
       FieldHeight: 20,          // 盤面の高さ(マス目の数)を設定します.
       TetriMinoSpawnPointX:  4, // テトリミノが出現する位置のX座標を設定します(未使用).
       TetriMinoSpawnPointY: -1, // テトリミノが出現する位置のY座標を設定します(未使用).
+      MaxLevel: 15,             // レベルの最大値.
   },
 
 

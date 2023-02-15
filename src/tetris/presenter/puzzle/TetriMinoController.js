@@ -217,4 +217,18 @@ class TetriMinoController
             return;
         }
     }
+
+
+    /*-----------------------------------------------------------------+
+    *
+    * 説明: 自由落下のディレイを変更する.
+    *
+    * 引数:
+    *   number fallDelay: 自由落下のディレイ(ms).
+    *
+    +-----------------------------------------------------------------*/
+    ChangeFallDelay(fallDelay)
+    {
+        this.#fallController.ChangeFallDelay(fallDelay);
+    }
 }
