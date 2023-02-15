@@ -8,7 +8,10 @@ async function Start()
 /* 更新処理 */
 function Update()
 {
-    if (IsGameOver()) Pause();
+    if (IsGameOver())
+    {
+        Pause();
+    }
 
     else
     {
@@ -28,8 +31,6 @@ function Update()
 
         if (!IsPause())
         {
-            UnPause();
-
             HardDrop(GetKeyState('ArrowUp'));
             SoftDrop(GetKeyState('ArrowDown'));
             MoveLeft(GetKeyState('ArrowLeft'));
