@@ -15,8 +15,10 @@ function Update()
     TurnRight(GetKeyState('x'));
 
     if (CanHold()) HoldTetriMino();
-    if (IsFixed()) GenerateNextTetriMino();
+
     if (IsLevelUp()) AccelerateFallSpeed();
+
+    if (IsFixed()) GenerateNextTetriMino();
 
     UpdateTetrisCore();
 
