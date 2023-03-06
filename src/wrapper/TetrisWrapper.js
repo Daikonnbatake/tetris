@@ -16,11 +16,6 @@ puzzle.NewTetriMino(builder.Generate(nowTetriMinoName));
 puzzle.SubscribeOnDeleteLines((...args)=>{ lineCounter.Count((args[0].length)); });
 
 
-/* UIのインスタンスを生成 */
-var backToGame = new UIElement(true);
-var pauseMenu  = new UIController(backToGame);
-
-
 /* 初期化 */
 async function TetrisInitialize()
 {
@@ -36,14 +31,8 @@ async function TetrisInitialize()
 
 /* 更新処理 --------------------------------------------------------------------------------------*/
 
-/* ポーズ中かどうか */
-function IsPause() { return GameTimer.IsPause(); }
-
-/* ポーズする */
-function Pause() { GameTimer.Pause(); }
-
-/* ポーズを解除する */
-function UnPause() { GameTimer.UnPause(); }
+/* タイマーを止める */
+function StopTimer() { GameTimer.Pause(); }
 
 /* ボタンが押されたかどうかを判定する */
 function IsPush(keyState) { return keyState === KeyState.Push(); }
@@ -68,12 +57,6 @@ function MoveRight(buttonState) { tetrisController.MoveRightButton(buttonState);
 
 /* ボタンの状態に応じて右回転を行う */
 function TurnRight(buttonState) { tetrisController.TurnRightButton(buttonState); }
-
-/* ポーズ中パネルを表示する */
-function ShowPausePanel() { pauseMenu.Show(); }
-
-/* ポーズ中パネルを隠す */
-function HidePausePanel() { pauseMenu.Hide(); }
 
 /* ホールドできるかどうか */
 function CanHold()
@@ -101,6 +84,7 @@ function IsGameOver() { return puzzle.IsGameOver(); }
 /* テトリミノをホールドする */
 function HoldTetriMino()
 {
+    if (IsGameOver());
     const nextTetriMinoName = holder.Hold(nowTetriMinoName);
     let   nextTetriMino;
     if (nextTetriMinoName == null)
@@ -115,6 +99,7 @@ function HoldTetriMino()
 /* 次のテトリミノを生成する */
 function GenerateNextTetriMino()
 {
+    if (IsGameOver());
     nowTetriMinoName    = random.GetNext();
     const nextTetriMino = builder.Generate(nowTetriMinoName);
     puzzle.NewTetriMino(nextTetriMino);
@@ -124,6 +109,7 @@ function GenerateNextTetriMino()
 /* 加速する */
 function AccelerateFallSpeed()
 {
+    if (IsGameOver());
     levelCounter.LevelUp();
     const level = levelCounter.GetNowLevel();
     tetrisController.ChangeFallDelay(1/level * 1000);
@@ -132,6 +118,7 @@ function AccelerateFallSpeed()
 /* テトリスの更新 */
 function UpdateTetrisCore()
 {
+    if (IsGameOver()) return;
     tetrisController.Update();
 }
 
@@ -194,27 +181,6 @@ function TetrisDraw()
         sprite.GetTransform().SetPosition(48, 56);
         sprite.Draw(Canvas.Context());
     }
-}
-
-
-/* UI の描画 */
-function UIDraw()
-{
-    let buttonImage = new Sprite(ImageCache.GetImage('pause'));
-    let panelImage  = new Sprite(ImageCache.GetImage('panel'));
-    let button      = new ButtonDrawer(buttonImage, backToGame);
-    let panel       = new PanelDrawer(panelImage, backToGame);
-
-    buttonImage.Split(new Size(48, 24));
-    panelImage.Split(new Size(8, 8));
-
-    panel.SetPosition(64, 40);
-    panel.SetSize(14, 10);
-    panel.Draw();
-
-    button.SetOrigin(0, 0);
-    button.SetPosition(96, 68);
-    button.Draw();
 }
 
 

@@ -5,46 +5,22 @@ async function Start()
 
 function Update()
 {
-    if (IsGameOver())
-    {
-        Pause();
-    }
+    if (IsGameOver()) StopTimer();
 
-    else
-    {
-        if (IsPush(GetKeyState('Escape')))
-        {
-            if (IsPause())
-            {
-                UnPause();
-                HidePausePanel();
-            }
-            else
-            {
-                Pause();
-                ShowPausePanel();
-            }
-        }
+    HardDrop(GetKeyState('ArrowUp'));
+    SoftDrop(GetKeyState('ArrowDown'));
+    MoveLeft(GetKeyState('ArrowLeft'));
+    MoveRight(GetKeyState('ArrowRight'));
+    TurnLeft(GetKeyState('z'));
+    TurnRight(GetKeyState('x'));
 
-        if (!IsPause())
-        {
-            HardDrop(GetKeyState('ArrowUp'));
-            SoftDrop(GetKeyState('ArrowDown'));
-            MoveLeft(GetKeyState('ArrowLeft'));
-            MoveRight(GetKeyState('ArrowRight'));
-            TurnLeft(GetKeyState('z'));
-            TurnRight(GetKeyState('x'));
+    if (CanHold()) HoldTetriMino();
+    if (IsFixed()) GenerateNextTetriMino();
+    if (IsLevelUp()) AccelerateFallSpeed();
 
-            if (CanHold()) HoldTetriMino();
-            if (IsFixed()) GenerateNextTetriMino();
-            if (IsLevelUp()) AccelerateFallSpeed();
-
-            UpdateTetrisCore();
-        }
-    }
+    UpdateTetrisCore();
 
     ClearCanvas();
     TetrisDraw();
-    UIDraw();
     FlipBuffer();
 }
