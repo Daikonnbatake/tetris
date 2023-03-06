@@ -22,7 +22,6 @@ async function TetrisInitialize()
     await ImageCache.AddImage('./img/pauseNow.png',    'pause');
     await ImageCache.AddImage('./img/blocks.png',      'blocks');
     await ImageCache.AddImage('./img/mini-block.png',  'miniBlocks');
-    await ImageCache.AddImage('./img/9slicePanel.png', 'panel');
     await ImageCache.AddImage('./img/bg.png',          'bg');
     await ImageCache.AddImage('./img/scoreNumber.png', 'scoreNumber');
     await ImageCache.AddImage('./img/gameover.png',    'gameover');
