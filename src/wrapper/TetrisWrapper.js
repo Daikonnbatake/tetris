@@ -117,7 +117,11 @@ function AccelerateFallSpeed()
 /* テトリスの更新 */
 function UpdateTetrisCore()
 {
-    if (IsGameOver()) return;
+    if (IsGameOver())
+    {
+        StopTimer();
+        return;
+    }
     tetrisController.Update();
 }
 

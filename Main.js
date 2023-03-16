@@ -5,8 +5,6 @@ async function Start()
 
 function Update()
 {
-    if (IsGameOver()) StopTimer();
-
     HardDrop(GetKeyState('ArrowUp'));
     SoftDrop(GetKeyState('ArrowDown'));
     MoveLeft(GetKeyState('ArrowLeft'));
