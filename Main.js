@@ -14,8 +14,6 @@ function Update()
 
     if (CanHold()) HoldTetriMino();
 
-    if (IsLevelUp()) AccelerateFallSpeed();
-
     if (IsFixed()) GenerateNextTetriMino();
 
     UpdateTetrisCore();
